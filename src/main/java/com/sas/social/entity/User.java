@@ -8,13 +8,16 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,8 +29,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
 
-    @Column(name="name_surname", nullable = false, unique = true)
-    private String nameSurname;
+    @Column(name="visible_name", nullable = false, unique = true)
+    private String visibleName;
     
     @Column(nullable = false, unique = true)
     private String username;
@@ -38,8 +41,10 @@ public class User {
     @Column(name ="user_password", nullable = false)
     private String password;
 
-    @Column(name="profile_photo_url")
-    private String profilePhotoUrl;
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "media_id")
+    private Media media;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
@@ -90,12 +95,12 @@ public class User {
 
     
     // getters and setters
-	public String getNameSurname() {
-		return nameSurname;
+	public String getVisibleName() {
+		return visibleName;
 	}
 
-	public void setNameSurname(String nameSurname) {
-		this.nameSurname = nameSurname;
+	public void setVisibleName(String nameSurname) {
+		this.visibleName = nameSurname;
 	}
 
 	public String getUsername() {
@@ -122,12 +127,12 @@ public class User {
 		this.password = password;
 	}
 
-	public String getProfilePhotoUrl() {
-		return profilePhotoUrl;
+	public Media getMedia() {
+		return media;
 	}
 
-	public void setProfilePhotoUrl(String profilePhotoUrl) {
-		this.profilePhotoUrl = profilePhotoUrl;
+	public void setMedia(Media media) {
+		this.media = media;
 	}
 
 	public Integer getUserId() {

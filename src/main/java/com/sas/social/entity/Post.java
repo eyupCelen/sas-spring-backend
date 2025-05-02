@@ -19,7 +19,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,8 +35,9 @@ public class Post {
     
 	private String content;
 	
-	@Column(name="image_url")
-	private String imageUrl;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "media_id")
+    private Media media;
 	
 	@Column(name="homepage_visible")
 	private Boolean homepageVisible;
@@ -78,12 +81,12 @@ public class Post {
 		this.content = content;
 	}
 
-	public String getImageUrl() {
-		return imageUrl;
+	public Media getMedia() {
+		return media;
 	}
 
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
+	public void setMedia(Media media) {
+		this.media = media;
 	}
 
 	public Boolean getHomepaegVisibility() {

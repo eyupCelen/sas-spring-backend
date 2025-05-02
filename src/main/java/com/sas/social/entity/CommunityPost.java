@@ -17,7 +17,6 @@ public class CommunityPost {
 	private Integer postId;
 	
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
     @JoinColumn(name = "post_id")
     private Post post;
 

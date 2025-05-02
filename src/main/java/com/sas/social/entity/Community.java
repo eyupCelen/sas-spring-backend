@@ -8,10 +8,14 @@ import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,8 +30,9 @@ public class Community {
 	@Column(name="community_name", unique = true, nullable = false)
 	private String communityName;
 	
-	@Column(name="community_photo_url")
-	private String photoUrl;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "media_id")
+    private Media media;
 	
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
     private List<CommunityPost> communityPosts = new ArrayList<>();
@@ -37,10 +42,10 @@ public class Community {
 
     public Community() {}
 
-	public Community(Integer communityId, String communityName, String photoUrl) {
+	public Community(Integer communityId, String communityName, Media media) {
 		this.communityId = communityId;
 		this.communityName = communityName;
-		this.photoUrl = photoUrl;
+		this.media = media;
 	}
 
 	public Integer getCommunityId() {
@@ -59,12 +64,12 @@ public class Community {
 		this.communityName = communityName;
 	}
 
-	public String getPhotoUrl() {
-		return photoUrl;
+	public Media getMedia() {
+		return media;
 	}
 
-	public void setPhotoUrl(String photoUrl) {
-		this.photoUrl = photoUrl;
+	public void setMedia(Media media) {
+		this.media = media;
 	}
 
 	public List<CommunityPost> getCommunityPosts() {
