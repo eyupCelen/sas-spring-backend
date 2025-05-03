@@ -15,7 +15,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -42,9 +41,12 @@ public class User {
     private String password;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "media_id")
-    private Media media;
+    @JoinColumn(name = "profile_photo_id")
+    private Media profilePhoto;
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "banner_photo_id")
+    private Media bannerPhoto;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
@@ -90,11 +92,18 @@ public class User {
     )
     private Set<User> blockedUsers = new HashSet<>();
     
-    // Constructor
+    // Constructors
     public User() {}
-
     
-    // getters and setters
+	public User(String visibleName, String username, String email, String password, Set<Category> userCategories) {
+		this.visibleName = visibleName;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.userCategories = userCategories;
+	}
+
+	// getters and setters
 	public String getVisibleName() {
 		return visibleName;
 	}
@@ -127,12 +136,20 @@ public class User {
 		this.password = password;
 	}
 
-	public Media getMedia() {
-		return media;
+	public Media getProfilePhoto() {
+		return profilePhoto;
 	}
 
-	public void setMedia(Media media) {
-		this.media = media;
+	public void setProfilePhoto(Media profilePhoto) {
+		this.profilePhoto = profilePhoto;
+	}
+	
+	public Media getBannerPhoto() {
+		return bannerPhoto;
+	}
+
+	public void setBannerPhoto(Media bannerPhoto) {
+		this.bannerPhoto = bannerPhoto;
 	}
 
 	public Integer getUserId() {

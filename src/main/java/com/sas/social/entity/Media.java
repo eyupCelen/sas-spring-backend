@@ -25,4 +25,46 @@ public class Media {
 	@Lob
 	@Column(name = "image_byte", columnDefinition = "BYTEA")
 	private byte[] imageByte;
+	
+	public Media() {}
+
+	public Media(Integer media_id, String imageName, String imageType, byte[] imageByte) {
+		this.media_id = media_id;
+		this.imageName = imageName;
+		this.imageType = imageType;
+		this.imageByte = imageByte;
+	}
+
+	public Integer getMedia_id() {
+		return media_id;
+	}
+
+	public void setMedia_id(Integer media_id) {
+		this.media_id = media_id;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+	public String getImageType() {
+		return imageType;
+	}
+
+	public void setImageType(String imageType) {
+		this.imageType = imageType;
+	}
+
+	public byte[] getImageByte() {
+		return imageByte;
+	}
+
+	public void setImageByte(byte[] imageByte) {
+		this.imageByte = imageByte;
+	}
+
 }

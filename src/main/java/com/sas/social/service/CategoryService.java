@@ -1,6 +1,7 @@
 package com.sas.social.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,10 @@ public class CategoryService {
 	@Autowired
 	public CategoryService(CategoryRepository categoryRepository) {
 		this.categoryRepository = categoryRepository;
+	}
+	
+	public Optional<Category> getCategory(Integer id) {
+		return categoryRepository.findById(id);
 	}
 	
 	public List<Category> getAllCategories() {
