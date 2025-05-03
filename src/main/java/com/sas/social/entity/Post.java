@@ -9,7 +9,7 @@ import java.util.Set;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -50,7 +50,7 @@ public class Post {
     private User user;  // author of the post
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    @JsonIgnore 
+    @JsonManagedReference 
     private List<Comment> postComments = new ArrayList<>();
 	
     @ManyToMany
@@ -59,7 +59,7 @@ public class Post {
       joinColumns = @JoinColumn(name = "post_id"), 
       inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    @JsonBackReference
+    @JsonManagedReference
     private Set<User> likingUsers = new HashSet<>();
     
     @ManyToMany

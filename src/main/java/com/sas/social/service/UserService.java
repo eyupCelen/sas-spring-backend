@@ -56,6 +56,18 @@ public class UserService {
         return userRepository.findBlockedUsersByUserId(userId);
     }
 
+    public int getNumberOfFollowers(int userId) {
+    	return userRepository.getNumberOfFollowers(userId);
+    }
+    
+    public int getNumberOfFollowing(int userId) {
+    	return userRepository.getNumberOfFollowing(userId);
+    }
+    
+    public int getPostNumber(int userId) {
+    	return userRepository.getPostNumber(userId);
+    }
+    
     // No explicit save needed if in transactional context
     @Transactional
     public void followUser(Integer followerId, Integer followedId) {

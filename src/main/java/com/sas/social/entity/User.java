@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,15 +53,18 @@ public class User {
     private Media bannerPhoto;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Post> posts = new ArrayList<>();
     
     @ManyToMany(mappedBy = "likingUsers")
+    @JsonBackReference
     private List<Post> likedPosts = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<Comment> comments = new ArrayList<>();
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<UserCommunity> participatedCommunities = new HashSet<>();
     
     @ManyToMany
@@ -74,6 +81,7 @@ public class User {
       joinColumns = @JoinColumn(name = "follower_id"), 
       inverseJoinColumns = @JoinColumn(name = "followed_id")
     )
+    @JsonIgnore
     private Set<User> followers = new HashSet<>();
     
     @ManyToMany
@@ -82,6 +90,7 @@ public class User {
       joinColumns = @JoinColumn(name = "followed_id"), 
       inverseJoinColumns = @JoinColumn(name = "follower_id")
     )
+    @JsonIgnore
     private Set<User> follows = new HashSet<>();
     
     @ManyToMany
@@ -90,6 +99,7 @@ public class User {
       joinColumns = @JoinColumn(name = "blocker_id"), 
       inverseJoinColumns = @JoinColumn(name = "blocked_id")
     )
+    @JsonIgnore
     private Set<User> blockedUsers = new HashSet<>();
     
     // Constructors
