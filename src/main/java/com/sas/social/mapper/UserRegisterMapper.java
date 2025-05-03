@@ -23,7 +23,7 @@ public class UserRegisterMapper
 				);
 	}
 
-	public static User registerDtoToUser(UserRegisterDto registerDto) {
+	public static User ToUser(UserRegisterDto registerDto) {
 		return new User(
 				registerDto.visibleName(),
 				registerDto.username(),
