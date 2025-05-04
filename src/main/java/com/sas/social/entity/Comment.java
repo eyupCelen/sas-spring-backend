@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,12 +28,12 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
+//    @JsonBackReference
     private User user;  // author of the comment
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
-    @JsonBackReference
+//    @JsonBackReference
     private Post post;
 	
 	@CreationTimestamp
@@ -44,6 +42,14 @@ public class Comment {
 	
 	// Constructor
 	public Comment() {}
+
+	public Comment(Integer commentId, String text, User user, Post post, LocalDateTime createdAt) {
+		this.commentId = commentId;
+		this.text = text;
+		this.user = user;
+		this.post = post;
+		this.createdAt = createdAt;
+	}
 
 	// getters and setters
 	public String getText() {

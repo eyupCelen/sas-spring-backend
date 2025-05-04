@@ -38,9 +38,9 @@ public interface UserRepository extends JpaRepository<User, Integer>{
     
     // For profile search
     
-    List<User> findByUserNameStartingWith(String str);
+    List<User> findByusernameStartingWith(String str);
     
-    List<User> findByVisibleNameStartingWith(String str);
+    List<User> findByvisibleNameStartingWith(String str);
     
     // For validation
     

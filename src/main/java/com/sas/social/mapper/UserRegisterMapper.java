@@ -14,7 +14,6 @@ public class UserRegisterMapper
 	@Override
 	public UserRegisterDto apply(User user) {
 		return new UserRegisterDto(
-				user.getUserId(),
 				user.getVisibleName(),
 				user.getUsername(),
 				user.getEmail(),

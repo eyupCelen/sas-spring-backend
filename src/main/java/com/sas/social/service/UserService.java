@@ -4,10 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
+import com.sas.social.dto.UserDto;
 import com.sas.social.dto.UserRegisterDto;
 import com.sas.social.entity.User;
+import com.sas.social.mapper.UserMapper;
 import com.sas.social.mapper.UserRegisterMapper;
 import com.sas.social.repository.UserRepository;
 
@@ -17,19 +22,28 @@ import jakarta.transaction.Transactional;
 public class UserService {
    
 	private UserRepository userRepository;
-	private UserRegisterMapper userRegisterMapper;
+	private UserMapper userMapper;
 	
 	@Autowired
     public UserService(UserRepository userRepository, 
-    				   UserRegisterMapper userRegisterMapper) {
+    				   UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.userRegisterMapper = userRegisterMapper;
+        this.userMapper = userMapper;
     }
 	
     @Transactional
-    public void signUpUser(UserRegisterDto userRegisterDto) {
+    public ResponseEntity<UserDto> signUpUser(UserRegisterDto userRegisterDto) {
+    	// Username and email should be unique
+    	boolean emailTaken = userRepository.existsByEmail(userRegisterDto.email());
+    	boolean usernameTaken = userRepository.existsByUsername(userRegisterDto.username());
+    	
+    	if(emailTaken || usernameTaken)
+    		return new ResponseEntity<>(null,  HttpStatus.CONFLICT);
+    	
     	User user = UserRegisterMapper.ToUser(userRegisterDto);
-        userRepository.save(user);
+    	userRepository.save(user);
+    	UserDto userDto = userMapper.apply(user);
+    	return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     public Optional<User> getUserById(Integer userId) {

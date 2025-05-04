@@ -8,9 +8,6 @@ import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,11 +43,11 @@ public class Post {
 	
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
+//    @JsonBackReference
     private User user;  // author of the post
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    @JsonManagedReference 
+//    @JsonManagedReference 
     private List<Comment> postComments = new ArrayList<>();
 	
     @ManyToMany
@@ -59,7 +56,7 @@ public class Post {
       joinColumns = @JoinColumn(name = "post_id"), 
       inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    @JsonManagedReference
+//    @JsonBackReference
     private Set<User> likingUsers = new HashSet<>();
     
     @ManyToMany

@@ -10,6 +10,6 @@ public record PostDto(
 		String content,
 		Media media,
 		Integer userId,
-		List<Comment> postComments) {
+		List<CommentDto> postComments) {
 
 }

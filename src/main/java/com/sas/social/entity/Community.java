@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,11 +34,11 @@ public class Community {
     private Media media;
 	
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
-    @JsonManagedReference
+//    @JsonManagedReference
     private List<CommunityPost> communityPosts = new ArrayList<>();
     
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
-    @JsonManagedReference
+//    @JsonManagedReference
     private Set<UserCommunity> communityUsers = new HashSet<>();
 
     public Community() {}

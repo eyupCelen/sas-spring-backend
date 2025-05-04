@@ -1,7 +1,5 @@
 package com.sas.social.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -23,7 +21,7 @@ public class CommunityPost {
 
     @ManyToOne
     @JoinColumn(name = "community_id", nullable = false)
-    @JsonBackReference
+//    @JsonBackReference
     private Community community;
 
     // Constructors
