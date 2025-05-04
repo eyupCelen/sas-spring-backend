@@ -23,12 +23,14 @@ public class UserService {
    
 	private UserRepository userRepository;
 	private UserMapper userMapper;
-	
+	private UserRegisterMapper userRegisterMapper;
 	@Autowired
     public UserService(UserRepository userRepository, 
-    				   UserMapper userMapper) {
+    				   UserMapper userMapper,
+    				   UserRegisterMapper userRegisterMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.userRegisterMapper = userRegisterMapper;
     }
 	
     @Transactional
@@ -40,7 +42,7 @@ public class UserService {
     	if(emailTaken || usernameTaken)
     		return new ResponseEntity<>(null,  HttpStatus.CONFLICT);
     	
-    	User user = UserRegisterMapper.ToUser(userRegisterDto);
+    	User user = userRegisterMapper.ToUser(userRegisterDto);
     	userRepository.save(user);
     	UserDto userDto = userMapper.apply(user);
     	return new ResponseEntity<>(userDto, HttpStatus.CREATED);

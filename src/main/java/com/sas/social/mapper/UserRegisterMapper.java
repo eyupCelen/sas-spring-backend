@@ -15,7 +15,7 @@ public class UserRegisterMapper
 	implements Function<User, UserRegisterDto>{
 
 	@Autowired
-	static CategoryRepository categoryRepository;
+    CategoryRepository categoryRepository;
 	
 	@Override
 	public UserRegisterDto apply(User user) {
@@ -31,7 +31,7 @@ public class UserRegisterMapper
 				);
 	}
 
-	public static User ToUser(UserRegisterDto registerDto) {
+	public User ToUser(UserRegisterDto registerDto) {
 		
 		return new User(
 				registerDto.visibleName(),
