@@ -43,7 +43,7 @@ public class CommentMapper
 				);
 	}
 	
-	public static Comment toComment(CommentDto commentDto) {
+	public Comment toComment(CommentDto commentDto) {
 	    User user = userRepository.findById( commentDto.userSummary().userId() )
 	            .orElseThrow(() -> new EntityNotFoundException("User not found"));
 	    Post post = postRepository.findById( commentDto.postId() )

@@ -108,7 +108,7 @@ public class User {
 		this.password = password;
 		this.userCategories = userCategories;
 	}
-
+	
 	// getters and setters
 	public String getVisibleName() {
 		return visibleName;
