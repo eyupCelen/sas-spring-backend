@@ -43,8 +43,7 @@ public class Comment {
 	// Constructor
 	public Comment() {}
 
-	public Comment(Integer commentId, String text, User user, Post post, LocalDateTime createdAt) {
-		this.commentId = commentId;
+	public Comment(String text, User user, Post post, LocalDateTime createdAt) {
 		this.text = text;
 		this.user = user;
 		this.post = post;

@@ -16,14 +16,15 @@ public record UserDto (
 		String email,
 		Media profilePhoto,
 		Media bannerPhoto,
-		List<PostDto> posts,
-		List<PostDto> likedPosts,
-		Set<UserCommunity> participatedCommunities,
-		Set<Integer> followsId,
-		Set<Integer> blockedUsersId,
+//		List<PostDto> posts,
+//		List<PostDto> likedPosts,
+//		Set<UserCommunity> participatedCommunities,
+//		Set<Integer> followsId,
+//		Set<Integer> blockedUsersId,
 		Integer postNumber,
 		Integer followerNumber,
 		Integer followingNumber
 ) {
 
+	
 }

@@ -24,6 +24,7 @@ public class UserService {
 	private UserRepository userRepository;
 	private UserMapper userMapper;
 	private UserRegisterMapper userRegisterMapper;
+	
 	@Autowired
     public UserService(UserRepository userRepository, 
     				   UserMapper userMapper,
@@ -34,30 +35,34 @@ public class UserService {
     }
 	
     @Transactional
-    public ResponseEntity<UserDto> signUpUser(UserRegisterDto userRegisterDto) {
+    public ResponseEntity<String> signUpUser(UserRegisterDto userRegisterDto) {
     	// Username and email should be unique
     	boolean emailTaken = userRepository.existsByEmail(userRegisterDto.email());
     	boolean usernameTaken = userRepository.existsByUsername(userRegisterDto.username());
     	
-    	if(emailTaken || usernameTaken)
-    		return new ResponseEntity<>(null,  HttpStatus.CONFLICT);
+    	if(emailTaken)
+    		return new ResponseEntity<>("This email is in use!",  HttpStatus.CONFLICT);
+    	if(usernameTaken)
+    		return new ResponseEntity<>("This username is already taken!",  HttpStatus.CONFLICT);
     	
-    	User user = userRegisterMapper.ToUser(userRegisterDto);
+    	User user = userRegisterMapper.ToEntity(userRegisterDto);
     	userRepository.save(user);
-    	UserDto userDto = userMapper.apply(user);
-    	return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+    	return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 
-    public Optional<User> getUserById(Integer userId) {
-        return userRepository.findById(userId);
+    public Optional<UserDto> getById(Integer userId) {
+        return userRepository.findById(userId)
+                             .map(userMapper);
     }
 
-    public Optional<User> getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<UserDto> getByUsername(String username) {
+        return userRepository.findByUsername(username)
+        					.map(userMapper);
     }
 
-    public Optional<User> getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Optional<UserDto> getByEmail(String email) {
+        return userRepository.findByEmail(email)
+        					 .map(userMapper);
     }
     
     public List<User> getFollowers(Integer userId) {

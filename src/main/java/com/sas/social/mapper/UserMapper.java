@@ -34,27 +34,27 @@ public class UserMapper
 				u.getProfilePhoto(),
 				u.getBannerPhoto(),
 				
-				u.getPosts()
-						.stream()
-						.map(postMapper)
-						.collect(Collectors.toList()),
-						
-				u.getLikedPosts()
-						.stream()
-						.map(postMapper)
-						.collect(Collectors.toList()),	
-				
-				u.getParticipatedCommunities(),
-				
-				u.getFollows()
-						.stream()
-						.map(f -> f.getUserId())
-						.collect(Collectors.toSet()),
-						
-				u.getBlockedUsers()
-						.stream()
-						.map(b -> b.getUserId())
-						.collect(Collectors.toSet()),
+//				u.getPosts()
+//						.stream()
+//						.map(postMapper)
+//						.collect(Collectors.toList()),
+//						
+//				u.getLikedPosts()
+//						.stream()
+//						.map(postMapper)
+//						.collect(Collectors.toList()),	
+//				
+//				u.getParticipatedCommunities(),
+//				
+//				u.getFollows()
+//						.stream()
+//						.map(f -> f.getUserId())
+//						.collect(Collectors.toSet()),
+//						
+//				u.getBlockedUsers()
+//						.stream()
+//						.map(b -> b.getUserId())
+//						.collect(Collectors.toSet()),
 						
 				postNumber,
 				followerNumber,
@@ -62,8 +62,13 @@ public class UserMapper
 				);
 	}
 	
-//	public User toUser(UserDto userDto) {
-//		
-//	}
+	public User toEntity(UserDto userDto) {
+		return new User(
+				userDto.userId(),
+				userDto.visibleName(),
+				userDto.username(),
+				userDto.profilePhoto(),
+				userDto.bannerPhoto()
+	); }
 
 }

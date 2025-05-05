@@ -101,6 +101,7 @@ public class User {
     // Constructors
     public User() {}
     
+    // Constructor for registration
 	public User(String visibleName, String username, String email, String password, Set<Category> userCategories) {
 		this.visibleName = visibleName;
 		this.username = username;
@@ -109,6 +110,15 @@ public class User {
 		this.userCategories = userCategories;
 	}
 	
+	// Constructor to update profile info
+	public User(Integer userId, String visibleName, String username, Media profilePhoto, Media bannerPhoto) {
+		this.userId = userId;
+		this.visibleName = visibleName;
+		this.username = username;
+		this.profilePhoto = profilePhoto;
+		this.bannerPhoto = bannerPhoto;
+	}
+
 	// getters and setters
 	public String getVisibleName() {
 		return visibleName;

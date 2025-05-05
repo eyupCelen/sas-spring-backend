@@ -74,6 +74,13 @@ public class Post {
 	// Constructor
 	public Post() {}
 
+	public Post(Integer postId, String content, Media media, User user) {
+		this.postId = postId;
+		this.content = content;
+		this.media = media;
+		this.user = user;
+	}
+
 	// getters and setters
 	public String getContent() {
 		return content;

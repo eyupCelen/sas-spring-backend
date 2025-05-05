@@ -28,7 +28,6 @@ public class CommentMapper
 	@Override
 	public CommentDto apply(Comment comment) {
 		return new CommentDto(
-				comment.getCommentId(),
 				comment.getText(),
 				
 				new UserSummaryDto(
@@ -37,7 +36,6 @@ public class CommentMapper
 						comment.getUser().getUsername(),
 						comment.getUser().getProfilePhoto()
 				),
-				
 				comment.getPost().getPostId(),
 				comment.getCreatedAt()
 				);
@@ -50,7 +48,6 @@ public class CommentMapper
 	            .orElseThrow(() -> new EntityNotFoundException("Post not found"));
 		
 	    return new Comment(
-				commentDto.commentId(),
 				commentDto.text(),
 				user,
 				post,
