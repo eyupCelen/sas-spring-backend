@@ -35,19 +35,19 @@ public class UserService {
     }
 	
     @Transactional
-    public ResponseEntity<String> signUpUser(UserRegisterDto userRegisterDto) {
+    public ResponseEntity<?> signUpUser(UserRegisterDto userRegisterDto) {
     	// Username and email should be unique
     	boolean emailTaken = userRepository.existsByEmail(userRegisterDto.email());
     	boolean usernameTaken = userRepository.existsByUsername(userRegisterDto.username());
     	
     	if(emailTaken)
-    		return new ResponseEntity<>("This email is in use!",  HttpStatus.CONFLICT);
+    		return ResponseEntity.status(HttpStatus.CONFLICT).body("This email is in use!");
     	if(usernameTaken)
-    		return new ResponseEntity<>("This username is already taken!",  HttpStatus.CONFLICT);
+    		return ResponseEntity.status(HttpStatus.CONFLICT).body("This username is already taken!");
     	
     	User user = userRegisterMapper.ToEntity(userRegisterDto);
     	userRepository.save(user);
-    	return new ResponseEntity<>(null, HttpStatus.CREATED);
+    		return ResponseEntity.ok().build();
     }
 
     public Optional<UserDto> getById(Integer userId) {
@@ -89,32 +89,59 @@ public class UserService {
     	return userRepository.getPostNumber(userId);
     }
     
-    // No explicit save needed if in transactional context
     @Transactional
-    public void followUser(Integer followerId, Integer followedId) {
-        User follower = userRepository.getReferenceById(followerId);
-        User followed = userRepository.getReferenceById(followedId);
+    public void follow(Integer followerId, Integer followedId) {
+        if (followerId.equals(followedId)) {
+            throw new IllegalArgumentException("You cannot follow yourself.");
+        }
+
+        User follower = userRepository.findById(followerId)
+                .orElseThrow();
+        User followed = userRepository.findById(followedId)
+                .orElseThrow();
+        
         follower.getFollows().add(followed);
     }
 
     @Transactional
-    public void unfollowUser(Integer followerId, Integer followedId) {
-        User follower = userRepository.getReferenceById(followerId);
-        User followed = userRepository.getReferenceById(followedId);
+    public void unfollow(Integer followerId, Integer followedId) {
+        if (followerId.equals(followedId)) {
+            throw new IllegalArgumentException("You cannot unfollow yourself.");
+        }
+
+        User follower = userRepository.findById(followerId)
+                .orElseThrow();
+        User followed = userRepository.findById(followedId)
+                .orElseThrow();
+        
         follower.getFollows().remove(followed);
     }
 
     @Transactional
-    public void blockUser(Integer blockerId, Integer blockedId) {
-        User blocker = userRepository.getReferenceById(blockerId);
-        User blocked = userRepository.getReferenceById(blockedId);
+    public void block(Integer blockerId, Integer blockedId) {
+        if (blockerId.equals(blockedId)) {
+            throw new IllegalArgumentException("You cannot block yourself.");
+        }
+
+        User blocker = userRepository.findById(blockedId)
+        		.orElseThrow();
+        User blocked = userRepository.findById(blockedId)
+        		.orElseThrow();
+        
         blocker.getBlockedUsers().add(blocked);
     }
 
     @Transactional
-    public void unblockUser(Integer blockerId, Integer blockedId) {
-        User blocker = userRepository.getReferenceById(blockerId);
-        User blocked = userRepository.getReferenceById(blockedId);
+    public void unblock(Integer blockerId, Integer blockedId) {
+        if (blockerId.equals(blockedId)) {
+            throw new IllegalArgumentException("You cannot block yourself.");
+        }
+
+        User blocker = userRepository.findById(blockedId)
+        		.orElseThrow();
+        User blocked = userRepository.findById(blockedId)
+        		.orElseThrow();
+        
         blocker.getBlockedUsers().remove(blocked);
     }
 
