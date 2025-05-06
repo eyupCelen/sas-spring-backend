@@ -78,7 +78,7 @@ public class User {
       inverseJoinColumns = @JoinColumn(name = "followed_id")
     )
 //    @JsonIgnore
-    private Set<User> followers = new HashSet<>();
+    private Set<User> follows = new HashSet<>();
     
     @ManyToMany
     @JoinTable(
@@ -87,7 +87,7 @@ public class User {
       inverseJoinColumns = @JoinColumn(name = "follower_id")
     )
 //    @JsonIgnore
-    private Set<User> follows = new HashSet<>();
+    private Set<User> followers = new HashSet<>();
     
     @ManyToMany
     @JoinTable(

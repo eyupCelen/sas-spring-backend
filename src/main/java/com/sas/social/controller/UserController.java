@@ -1,6 +1,6 @@
 package com.sas.social.controller;
 
-import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,13 +64,15 @@ public class UserController {
             @AuthenticationPrincipal UserPrincipal userDetails,
             @PathVariable("id") Integer followedId) {
 
-        Integer followerId = userDetails.getUserId();
+    	Integer followerId = userDetails.getUserId();
+        if (followerId.equals(followedId)) {
+            return ResponseEntity.badRequest().body("Cannot follow self.");
+        }
+
         try {
             userService.follow(followerId, followedId);
             return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (EntityNotFoundException e) {
+        } catch (NoSuchElementException e) {
             return ResponseEntity.badRequest().body("This account does not exist.");
         }        
     }
@@ -82,48 +84,55 @@ public class UserController {
             @PathVariable("id") Integer followedId) {
 
         Integer followerId = userDetails.getUserId();
+        if (followerId.equals(followedId)) {
+            return ResponseEntity.badRequest().body("Cannot unfollow self.");
+        }
+
         try {
-            userService.unfollow(followerId, followedId);
+            userService.follow(followerId, followedId);
             return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (EntityNotFoundException e) {
+        } catch (NoSuchElementException e) {
             return ResponseEntity.badRequest().body("This account does not exist.");
         }        
     }
     
     @PostMapping("/{id}/block")
-    @Transactional
     public ResponseEntity<?> blockUser(
             @AuthenticationPrincipal UserPrincipal userDetails,
-            @PathVariable("id") Integer followedId) {
+            @PathVariable("id") Integer blockedId) {
 
-        Integer followerId = userDetails.getUserId();
+        Integer blockerId = userDetails.getUserId();
+
+        if (blockerId.equals(blockedId)) {
+            return ResponseEntity.badRequest().body("Cannot block self.");
+        }
+
         try {
-            userService.block(followerId, followedId);
+            userService.block(blockerId, blockedId);
             return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (EntityNotFoundException e) {
+        } catch (NoSuchElementException e) {
             return ResponseEntity.badRequest().body("This account does not exist.");
-        }        
+        }
     }
-
+    
     @PostMapping("/{id}/unblock")
     @Transactional
     public ResponseEntity<?> unblockUser(
             @AuthenticationPrincipal UserPrincipal userDetails,
-            @PathVariable("id") Integer followedId) {
+            @PathVariable("id") Integer blockedId) {
 
-        Integer followerId = userDetails.getUserId();
+        Integer blockerId = userDetails.getUserId();
+
+        if (blockerId.equals(blockedId)) {
+            return ResponseEntity.badRequest().body("Cannot unblock self.");
+        }
+
         try {
-            userService.unblock(followerId, followedId);
+            userService.block(blockerId, blockedId);
             return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.badRequest().body("The given account does not exist.");
-        }        
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.badRequest().body("This account does not exist.");
+        }
     }
 
 }

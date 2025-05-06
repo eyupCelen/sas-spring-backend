@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.sas.social.dto.UserDto;
 import com.sas.social.dto.UserRegisterDto;
@@ -89,60 +88,44 @@ public class UserService {
     	return userRepository.getPostNumber(userId);
     }
     
-    @Transactional
     public void follow(Integer followerId, Integer followedId) {
-        if (followerId.equals(followedId)) {
-            throw new IllegalArgumentException("You cannot follow yourself.");
-        }
-
         User follower = userRepository.findById(followerId)
                 .orElseThrow();
         User followed = userRepository.findById(followedId)
                 .orElseThrow();
         
         follower.getFollows().add(followed);
+        userRepository.save(follower);
     }
 
-    @Transactional
     public void unfollow(Integer followerId, Integer followedId) {
-        if (followerId.equals(followedId)) {
-            throw new IllegalArgumentException("You cannot unfollow yourself.");
-        }
-
         User follower = userRepository.findById(followerId)
                 .orElseThrow();
         User followed = userRepository.findById(followedId)
                 .orElseThrow();
         
         follower.getFollows().remove(followed);
+        userRepository.save(follower);
     }
 
-    @Transactional
     public void block(Integer blockerId, Integer blockedId) {
-        if (blockerId.equals(blockedId)) {
-            throw new IllegalArgumentException("You cannot block yourself.");
-        }
-
-        User blocker = userRepository.findById(blockedId)
+        User blocker = userRepository.findById(blockerId)
         		.orElseThrow();
         User blocked = userRepository.findById(blockedId)
         		.orElseThrow();
         
         blocker.getBlockedUsers().add(blocked);
+        userRepository.save(blocker);
     }
 
-    @Transactional
     public void unblock(Integer blockerId, Integer blockedId) {
-        if (blockerId.equals(blockedId)) {
-            throw new IllegalArgumentException("You cannot block yourself.");
-        }
-
-        User blocker = userRepository.findById(blockedId)
+        User blocker = userRepository.findById(blockerId)
         		.orElseThrow();
         User blocked = userRepository.findById(blockedId)
         		.orElseThrow();
         
         blocker.getBlockedUsers().remove(blocked);
+        userRepository.save(blocker);
     }
 
 }
