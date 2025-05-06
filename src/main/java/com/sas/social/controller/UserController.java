@@ -75,7 +75,7 @@ public class UserController {
         }        
     }
 	
-    @PostMapping("/{id}/follow")
+    @PostMapping("/{id}/unfollow")
     @Transactional
     public ResponseEntity<?> unfollowUser(
             @AuthenticationPrincipal UserPrincipal userDetails,
