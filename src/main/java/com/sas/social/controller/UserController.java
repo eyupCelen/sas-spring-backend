@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sas.social.dto.UserDto;
+import com.sas.social.dto.UserProfileDto;
 import com.sas.social.dto.UserRegisterDto;
 import com.sas.social.entity.UserPrincipal;
 import com.sas.social.service.UserService;
@@ -38,21 +38,21 @@ public class UserController {
 	}
 	
 	@GetMapping("/id/{id}")
-	public ResponseEntity<UserDto> getById(@PathVariable Integer id) {
+	public ResponseEntity<UserProfileDto> getById(@PathVariable Integer id) {
 	    return userService.getById(id)
 	            .map(ResponseEntity::ok)
 	            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 	
 	@GetMapping("/username/{username}")
-	public ResponseEntity<UserDto> getByUsername(@PathVariable String username) {
+	public ResponseEntity<UserProfileDto> getByUsername(@PathVariable String username) {
 	    return userService.getByUsername(username)
 	            .map(ResponseEntity::ok)
 	            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 
 	@GetMapping("/email/{email}")
-	public ResponseEntity<UserDto> getByEmail(@PathVariable String email) {
+	public ResponseEntity<UserProfileDto> getByEmail(@PathVariable String email) {
 	    return userService.getByEmail(email)
 	            .map(ResponseEntity::ok)
 	            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());

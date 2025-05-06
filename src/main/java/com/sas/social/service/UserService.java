@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.sas.social.dto.UserDto;
+import com.sas.social.dto.UserProfileDto;
 import com.sas.social.dto.UserRegisterDto;
 import com.sas.social.entity.User;
-import com.sas.social.mapper.UserMapper;
+import com.sas.social.mapper.UserProfileMapper;
 import com.sas.social.mapper.UserRegisterMapper;
 import com.sas.social.repository.UserRepository;
 
@@ -21,12 +21,12 @@ import jakarta.transaction.Transactional;
 public class UserService {
    
 	private UserRepository userRepository;
-	private UserMapper userMapper;
+	private UserProfileMapper userMapper;
 	private UserRegisterMapper userRegisterMapper;
 	
 	@Autowired
     public UserService(UserRepository userRepository, 
-    				   UserMapper userMapper,
+    				   UserProfileMapper userMapper,
     				   UserRegisterMapper userRegisterMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
@@ -49,17 +49,17 @@ public class UserService {
     		return ResponseEntity.ok().build();
     }
 
-    public Optional<UserDto> getById(Integer userId) {
+    public Optional<UserProfileDto> getById(Integer userId) {
         return userRepository.findById(userId)
                              .map(userMapper);
     }
 
-    public Optional<UserDto> getByUsername(String username) {
+    public Optional<UserProfileDto> getByUsername(String username) {
         return userRepository.findByUsername(username)
         					.map(userMapper);
     }
 
-    public Optional<UserDto> getByEmail(String email) {
+    public Optional<UserProfileDto> getByEmail(String email) {
         return userRepository.findByEmail(email)
         					 .map(userMapper);
     }

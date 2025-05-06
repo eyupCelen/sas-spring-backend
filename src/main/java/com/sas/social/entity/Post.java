@@ -36,7 +36,7 @@ public class Post {
 	
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "media_id")
-    private Media media;
+    private Media postImage;
 	
 	@Column(name="homepage_visible")
 	private Boolean homepageVisible;
@@ -77,7 +77,7 @@ public class Post {
 	public Post(Integer postId, String content, Media media, User user) {
 		this.postId = postId;
 		this.content = content;
-		this.media = media;
+		this.postImage = media;
 		this.user = user;
 	}
 
@@ -90,12 +90,12 @@ public class Post {
 		this.content = content;
 	}
 
-	public Media getMedia() {
-		return media;
+	public Media getPostImage() {
+		return postImage;
 	}
 
-	public void setMedia(Media media) {
-		this.media = media;
+	public void setPostImage(Media media) {
+		this.postImage = media;
 	}
 
 	public Boolean getHomepaegVisibility() {

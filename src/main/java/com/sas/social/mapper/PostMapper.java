@@ -1,31 +1,41 @@
 package com.sas.social.mapper;
 
-import java.util.function.Function;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.sas.social.dto.PostDto;
+import com.sas.social.dto.PostResponseDto;
+import com.sas.social.dto.UserSummary;
 import com.sas.social.entity.Post;
+import com.sas.social.repository.PostRepository;
+import com.sas.social.repository.UserRepository;
 
 @Component
-public class PostMapper 
-	implements Function<Post, PostDto> {
+public class PostMapper {
 
-	@Autowired
-	CommentMapper commentMapper;
-	
-	@Override
-	public PostDto apply(Post post) {
-		return new PostDto(
-				post.getPostId(),
-				post.getContent(),
-				post.getMedia(),
-				post.getUser().getUserId()
-		);
-	}
+    @Autowired
+    UserRepository userRepository;
+    
+    @Autowired
+    PostRepository postRepository;
 
-	public static Post toPost(PostDto postDto) {
-		return new Post();
-	}
+    public PostResponseDto map(Post post, Integer viewingUserId) {
+        Integer postAuthorId = post.getUser().getUserId();
+
+        boolean isPostAuthorFollowed = userRepository.isUserFollowing(viewingUserId, postAuthorId);
+        boolean isPostLiked = postRepository.hasUserLikedPost(viewingUserId, post.getPostId());
+
+        return new PostResponseDto(
+            new UserSummary(
+                post.getUser().getUserId(),
+                post.getUser().getVisibleName(),
+                post.getUser().getUsername(),
+                post.getUser().getProfilePhoto()
+            ),
+            post.getPostId(),
+            post.getContent(),
+            post.getPostImage(),
+            isPostAuthorFollowed,
+            false
+        );
+    }
 }

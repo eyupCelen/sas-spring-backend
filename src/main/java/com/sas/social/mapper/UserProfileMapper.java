@@ -1,0 +1,46 @@
+package com.sas.social.mapper;
+
+import java.util.function.Function;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.sas.social.dto.UserProfileDto;
+import com.sas.social.entity.User;
+import com.sas.social.repository.UserRepository;
+
+@Component
+public class UserProfileMapper 
+	implements Function<User, UserProfileDto> {
+	
+	@Autowired 
+	private UserRepository userRepository;
+	
+	@Override
+	public UserProfileDto apply(User u) {
+		Integer postNumber = userRepository.getPostNumber( u.getUserId() );
+		Integer followerNumber = userRepository.getNumberOfFollowers( u.getUserId() );
+		Integer followingNumber = userRepository.getNumberOfFollowing( u.getUserId() ); 
+		
+		return new UserProfileDto(
+				u.getUserId(),
+				u.getVisibleName(),
+				u.getEmail(),
+				u.getProfilePhoto(),
+				u.getBannerPhoto(),				
+				postNumber,
+				followerNumber,
+				followingNumber
+				);
+	}
+	
+//	public User toEntity(UserProfileDto userDto) {
+//		return new User(
+//				userDto.userId(),
+//				userDto.visibleName(),
+//				userDto.username(),
+//				userDto.profilePhoto(),
+//				userDto.bannerPhoto()
+//	); }
+
+}

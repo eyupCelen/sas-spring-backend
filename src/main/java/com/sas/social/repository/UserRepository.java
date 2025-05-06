@@ -47,4 +47,15 @@ public interface UserRepository extends JpaRepository<User, Integer>{
     boolean existsByUsername(String username);
 
     boolean existsByEmail(String email);
+    
+    // Existence checks
+    
+    @NativeQuery(value = "SELECT EXISTS(SELECT 1 FROM user_follow WHERE follower_id = :follower_id AND followed_id = :followed_id)")
+    boolean isUserFollowing(@Param("follower_id") Integer followerId, 
+                            @Param("followed_id") Integer followedId);
+
+    @NativeQuery(value = "SELECT EXISTS(SELECT 1 FROM user_block WHERE blocker_id = :blocker_id AND blocked_id = :blocked_id)")
+    boolean isUserBlocking(@Param("blocker_id") Integer blocker_id, 
+                            @Param("blocked_id") Integer blocked_id);
+
 }

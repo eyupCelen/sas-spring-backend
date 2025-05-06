@@ -2,10 +2,10 @@ package com.sas.social.dto;
 
 import java.time.LocalDateTime;
 
-public record CommentDto(
-		String text,
-		UserSummaryDto userSummary,
+public record CommentResponseDto(
 		Integer postId,
+		UserSummary userSummary,
+		String text,
 		LocalDateTime createdAt) {
 
 }

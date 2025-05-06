@@ -43,10 +43,10 @@ public class Comment {
 	// Constructor
 	public Comment() {}
 
-	public Comment(String text, User user, Post post, LocalDateTime createdAt) {
-		this.text = text;
+	public Comment(User user, Post post, String text, LocalDateTime createdAt) {
 		this.user = user;
 		this.post = post;
+		this.text = text;
 		this.createdAt = createdAt;
 	}
 
