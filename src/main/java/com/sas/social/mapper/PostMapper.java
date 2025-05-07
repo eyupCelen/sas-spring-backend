@@ -20,9 +20,13 @@ public class PostMapper {
 
     public PostResponseDto map(Post post, Integer viewingUserId) {
         Integer postAuthorId = post.getUser().getUserId();
+        Integer postId = post.getPostId();
 
         boolean isPostAuthorFollowed = userRepository.isUserFollowing(viewingUserId, postAuthorId);
-        boolean isPostLiked = postRepository.hasUserLikedPost(viewingUserId, post.getPostId());
+        boolean isPostLiked = postRepository.hasUserLikedPost(viewingUserId, postId);
+        
+        Integer postLikeCount = postRepository.getLikeCount( postId );
+        Integer postCommentCount = postRepository.getCommentCount( postId );
 
         return new PostResponseDto(
             new UserSummary(
@@ -34,8 +38,12 @@ public class PostMapper {
             post.getPostId(),
             post.getContent(),
             post.getPostImage(),
+            
             isPostAuthorFollowed,
-            false
+            isPostLiked,
+            
+            postLikeCount,
+            postCommentCount
         );
     }
 }

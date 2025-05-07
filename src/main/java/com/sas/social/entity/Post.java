@@ -74,11 +74,12 @@ public class Post {
 	// Constructor
 	public Post() {}
 
-	public Post(Integer postId, String content, Media media, User user) {
-		this.postId = postId;
+	public Post(String content, Media postImage, Boolean homepageVisible, User user, Set<Category> postCategories) {
 		this.content = content;
-		this.postImage = media;
+		this.postImage = postImage;
+		this.homepageVisible = homepageVisible;
 		this.user = user;
+		this.postCategories = postCategories;
 	}
 
 	// getters and setters

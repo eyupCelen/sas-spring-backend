@@ -8,7 +8,9 @@ public record PostResponseDto(
 		String content,
 		Media postImage,
 		Boolean isPostAuthorFollowed,
-		Boolean isPostLiked
+		Boolean isPostLiked,
+		Integer numberOfPostLike,
+		Integer numberOfPostComment
 		) {
 
 }
