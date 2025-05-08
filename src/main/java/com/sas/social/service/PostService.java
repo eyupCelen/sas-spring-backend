@@ -45,7 +45,7 @@ public class PostService {
 	}
 	
 	public Page<PostResponseDto> getPostsOfUser(Integer userId, Integer viewerId, Pageable pageable) {
-		Page<Post> posts = postRepository.findByUser(userId, pageable);
+		Page<Post> posts = postRepository.findByUserId_OrderByCreationDate(userId, pageable);
 		return posts.map(p -> postMapper.map(p, viewerId));
 	}
 	

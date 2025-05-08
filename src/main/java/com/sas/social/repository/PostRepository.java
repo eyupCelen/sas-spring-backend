@@ -28,8 +28,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     // Search posts by caption content
     List<Post> findBycontentContainingIgnoreCase(String keyword);
     
-    @Query("SELECT p FROM Post p WHERE p.user.userId = :userId")
-    Page<Post> findByUser(@Param("userId") Integer userId, Pageable pageable);
+    @Query("SELECT p FROM Post p WHERE p.user.userId = :userId ORDER BY p.createdAt DESC")
+    Page<Post> findByUserId_OrderByCreationDate(@Param("userId") Integer userId, Pageable pageable);
     
     boolean existsByPostId(Integer postId);
 }

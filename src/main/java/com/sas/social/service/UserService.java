@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.sas.social.dto.UserProfileDto;
 import com.sas.social.dto.UserRegisterDto;
+import com.sas.social.dto.UserUpdateDto;
 import com.sas.social.entity.User;
 import com.sas.social.mapper.UserProfileMapper;
 import com.sas.social.mapper.UserRegisterMapper;
@@ -50,6 +51,25 @@ public class UserService {
     		return ResponseEntity.ok().build();
     }
 
+    public void updateUser(UserUpdateDto dto, Integer userId) {
+    	User user = userRepository.findById(userId).get();
+    	
+        if (dto.visibleName() != null) {
+            user.setVisibleName( dto.visibleName() );
+        }
+        if (dto.bio() != null) {
+            user.setBio( dto.bio() );
+        }
+        if (dto.profilePhoto() != null) {
+            user.setProfilePhoto( dto.profilePhoto() );
+        }
+        if (dto.bannerPhoto() != null) {
+            user.setBannerPhoto( dto.bannerPhoto() );
+        }
+        
+        userRepository.save(user);
+    }
+    
     public Optional<UserProfileDto> getById(Integer userId) {
         return userRepository.findById(userId)
                              .map(userMapper);

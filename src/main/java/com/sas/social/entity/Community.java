@@ -29,6 +29,9 @@ public class Community {
 	@Column(name="community_name", unique = true, nullable = false)
 	private String communityName;
 	
+	@Column(name="community_description", nullable = false)
+	private String communityDescription;
+	
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "media_id")
     private Media media;
@@ -41,18 +44,14 @@ public class Community {
 
     public Community() {}
 
-	public Community(Integer communityId, String communityName, Media media) {
-		this.communityId = communityId;
+	public Community(String communityName, String communityDescription, Media media) {
 		this.communityName = communityName;
 		this.media = media;
+		this.communityDescription = communityDescription;
 	}
 
 	public Integer getCommunityId() {
 		return communityId;
-	}
-
-	public void setCommunityId(Integer communityId) {
-		this.communityId = communityId;
 	}
 
 	public String getCommunityName() {
@@ -61,6 +60,14 @@ public class Community {
 
 	public void setCommunityName(String communityName) {
 		this.communityName = communityName;
+	}
+	
+	public String getCommunityDescription() {
+		return communityDescription;
+	}
+	
+	public void setCommunityDescription(String description) {
+		this.communityDescription = description;
 	}
 
 	public Media getMedia() {

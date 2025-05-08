@@ -37,6 +37,8 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
+    private String bio;
+    
     @Column(name ="user_password", nullable = false)
     private String password;
 
@@ -107,15 +109,6 @@ public class User {
 		this.userCategories = userCategories;
 	}
 	
-	// Constructor to update profile info
-	public User(Integer userId, String visibleName, String username, Media profilePhoto, Media bannerPhoto) {
-		this.userId = userId;
-		this.visibleName = visibleName;
-		this.username = username;
-		this.profilePhoto = profilePhoto;
-		this.bannerPhoto = bannerPhoto;
-	}
-
 	// getters and setters
 	public String getVisibleName() {
 		return visibleName;
@@ -133,6 +126,14 @@ public class User {
 		this.username = username;
 	}
 
+	public String getBio() {
+		return bio;
+	}
+	
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
