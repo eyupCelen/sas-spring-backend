@@ -21,7 +21,6 @@ public class PostService {
 	@Autowired
 	PostMapper postMapper;
 
-
 	public ResponseEntity<?> createPost(PostCreateDto postDto) {
 		if(postDto.title() == null && postDto.postImage() == null)
 			return ResponseEntity.badRequest().body("Cannot create empty post");

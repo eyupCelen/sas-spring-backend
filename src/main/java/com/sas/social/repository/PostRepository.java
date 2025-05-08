@@ -30,4 +30,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     
     @Query("SELECT p FROM Post p WHERE p.user.userId = :userId")
     Page<Post> findByUser(@Param("userId") Integer userId, Pageable pageable);
+    
+    boolean existsByPostId(Integer postId);
 }

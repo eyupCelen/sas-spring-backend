@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sas.social.dto.PostCreateDto;
 import com.sas.social.dto.PostResponseDto;
 import com.sas.social.entity.UserPrincipal;
+import com.sas.social.service.CommentService;
 import com.sas.social.service.PostService;
 
 @RestController
@@ -26,10 +27,12 @@ import com.sas.social.service.PostService;
 public class PostController {
 
 	private PostService postService;
+	private CommentService commentService;
 
 	@Autowired
-	public PostController(PostService postService) {
+	public PostController(PostService postService, CommentService commentService) {
 		this.postService = postService;
+		this.commentService = commentService;
 	}
 	
 	@PostMapping("/create")
@@ -45,7 +48,8 @@ public class PostController {
 		try {
 			PostResponseDto responseDto =  postService.getPost(postId, viewingUserId);
 			return ResponseEntity.ok(responseDto);
-		} catch(NoSuchElementException e) {
+		}
+		catch(NoSuchElementException e) {
 			return ResponseEntity.badRequest().body("Post doesn't exist");
 		}
 	}
@@ -64,5 +68,9 @@ public class PostController {
 	    return ResponseEntity.ok(posts);
 	}
 
-	
+	@GetMapping("/{postId}/comments")
+	public ResponseEntity<?> getPostComments(@PathVariable Integer postId) {
+		return commentService.getPostComments(postId);
+	}
+
 }

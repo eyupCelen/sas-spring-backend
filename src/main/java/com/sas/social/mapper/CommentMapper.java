@@ -5,6 +5,7 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.sas.social.dto.CommentCreateDto;
 import com.sas.social.dto.CommentResponseDto;
 import com.sas.social.dto.UserSummary;
 import com.sas.social.entity.Comment;
@@ -42,8 +43,8 @@ public class CommentMapper
 				);
 	}
 	
-	public Comment toComment(CommentResponseDto commentDto) {
-	    User user = userRepository.findById( commentDto.userSummary().userId() )
+	public Comment toEntity(CommentCreateDto commentDto) {
+	    User user = userRepository.findByUsername( commentDto.username() )
 	            .orElseThrow(() -> new EntityNotFoundException("User not found"));
 	    Post post = postRepository.findById( commentDto.postId() )
 	            .orElseThrow(() -> new EntityNotFoundException("Post not found"));
@@ -51,8 +52,7 @@ public class CommentMapper
 	    return new Comment(
 				user,
 				post,
-				commentDto.text(),
-				commentDto.createdAt()
+				commentDto.text()
 				);
 	}
 	
