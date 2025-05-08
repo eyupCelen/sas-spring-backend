@@ -25,7 +25,7 @@ public class UserProfileMapper
 		return new UserProfileDto(
 				u.getUserId(),
 				u.getVisibleName(),
-				u.getEmail(),
+				u.getUsername(),
 				u.getProfilePhoto(),
 				u.getBannerPhoto(),				
 				postNumber,

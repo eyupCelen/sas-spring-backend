@@ -45,6 +45,37 @@ public class SecurityConfig {
 //	}
     
     
+//	@Bean
+//	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//	    http
+//	        .csrf(csrf -> csrf.disable())
+//	        .cors(Customizer.withDefaults())
+//	        .authorizeHttpRequests(auth -> auth
+//	                .requestMatchers("/signin", "/signup").permitAll()
+//	                .anyRequest().authenticated()
+//	        )
+//	        .formLogin(form -> form
+//	        .loginProcessingUrl("/signin")
+//	        .successHandler(successHandler())
+//	        .failureHandler(failureHandler())
+//	        .permitAll()
+//	        )
+//	            .logout(logout -> logout
+//	                    .logoutUrl("/logout")
+//	                    .logoutSuccessHandler((request, response, authentication) -> {
+//	                        response.setStatus(HttpServletResponse.SC_OK);
+//	                        response.setContentType("application/json");
+//	                        response.setHeader("Set-Cookie", "JSESSIONID=; HttpOnly; Path=/ Max-Age=0");
+//	                        response.getWriter().write("{\"message\":\"Logged out successfully\"}");
+//	                    })
+//	                    .deleteCookies("JSESSIONID")
+//	                    .invalidateHttpSession(true)
+//	                    .permitAll()
+//	            );
+//	
+//	    return http.build();
+//	}
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    http
@@ -55,27 +86,27 @@ public class SecurityConfig {
 	                .anyRequest().authenticated()
 	        )
 	        .formLogin(form -> form
-	        .loginProcessingUrl("/signin")
-	        .successHandler(successHandler())
-	        .failureHandler(failureHandler())
-	        .permitAll()
+	            .loginProcessingUrl("/signin")
+	            .successHandler(successHandler())
+	            .failureHandler(failureHandler())
+	            .permitAll()
 	        )
-	            .logout(logout -> logout
-	                    .logoutUrl("/logout")
-	                    .logoutSuccessHandler((request, response, authentication) -> {
-	                        response.setStatus(HttpServletResponse.SC_OK);
-	                        response.setContentType("application/json");
-	                        response.setHeader("Set-Cookie", "JSESSIONID=; HttpOnly; Path=/ Max-Age=0");
-	                        response.getWriter().write("{\"message\":\"Logged out successfully\"}");
-	                    })
-	                    .deleteCookies("JSESSIONID")
-	                    .invalidateHttpSession(true)
-	                    .permitAll()
-	            );
-	
+	        .httpBasic(Customizer.withDefaults()) // 
+	        .logout(logout -> logout
+	                .logoutUrl("/logout")
+	                .logoutSuccessHandler((request, response, authentication) -> {
+	                    response.setStatus(HttpServletResponse.SC_OK);
+	                    response.setContentType("application/json");
+	                    response.setHeader("Set-Cookie", "JSESSIONID=; HttpOnly; Path=/ Max-Age=0");
+	                    response.getWriter().write("{\"message\":\"Logged out successfully\"}");
+	                })
+	                .deleteCookies("JSESSIONID")
+	                .invalidateHttpSession(true)
+	                .permitAll()
+	        );
+
 	    return http.build();
 	}
-
 
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {

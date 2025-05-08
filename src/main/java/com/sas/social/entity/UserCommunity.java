@@ -23,13 +23,11 @@ public class UserCommunity {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId") // maps to id.userId
     @JoinColumn(name = "user_id", nullable = false)
-//    @JsonBackReference
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("communityId") // maps to id.communityId
     @JoinColumn(name = "community_id", nullable = false)
-//    @JsonBackReference
     private Community community;
 
     @Column(name = "user_role", nullable = false)

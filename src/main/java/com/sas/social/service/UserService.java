@@ -44,6 +44,7 @@ public class UserService {
     	if(usernameTaken)
     		return ResponseEntity.status(HttpStatus.CONFLICT).body("This username is already taken!");
     	
+    	// mapper handles hashing the password
     	User user = userRegisterMapper.ToEntity(userRegisterDto);
     	userRepository.save(user);
     		return ResponseEntity.ok().build();

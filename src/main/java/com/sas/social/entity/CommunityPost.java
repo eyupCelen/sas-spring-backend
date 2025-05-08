@@ -21,7 +21,6 @@ public class CommunityPost {
 
     @ManyToOne
     @JoinColumn(name = "community_id", nullable = false)
-//    @JsonBackReference
     private Community community;
 
     // Constructors

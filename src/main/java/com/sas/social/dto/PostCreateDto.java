@@ -10,6 +10,6 @@ public record PostCreateDto(
 		String title,
 		Media postImage,
 		Boolean homepageVisible,
-		Set<Category> postCategories) {
+		Set<String> postCategories) {
 
 }

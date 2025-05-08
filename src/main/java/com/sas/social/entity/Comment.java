@@ -28,12 +28,10 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-//    @JsonBackReference
     private User user;  // author of the comment
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
-//    @JsonBackReference
     private Post post;
 	
 	@CreationTimestamp

@@ -32,7 +32,8 @@ public class CommentService {
 	public ResponseEntity<?> createPost(CommentCreateDto commentDto) {
 		try {
 			Comment comment = commentMapper.toEntity(commentDto);
-			return ResponseEntity.ok(comment);
+			commentRepository.save(comment);
+			return ResponseEntity.ok().build();
 		} 
 		catch(NoSuchElementException e) {
 			return ResponseEntity.badRequest().body( e.getMessage() );

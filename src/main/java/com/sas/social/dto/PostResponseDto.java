@@ -1,5 +1,7 @@
 package com.sas.social.dto;
 
+import java.time.LocalDateTime;
+
 import com.sas.social.entity.Media;
 
 public record PostResponseDto(
@@ -10,7 +12,8 @@ public record PostResponseDto(
 		Boolean isPostAuthorFollowed,
 		Boolean isPostLiked,
 		Integer numberOfPostLike,
-		Integer numberOfPostComment
+		Integer numberOfPostComment,
+		LocalDateTime createdAt
 		) {
 
 }

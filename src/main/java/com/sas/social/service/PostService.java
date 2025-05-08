@@ -56,8 +56,8 @@ public class PostService {
 	            .orElseThrow(() -> new EntityNotFoundException("Post not found"));
 
 		
-		user.getLikedPosts().add(post);
-		userRepository.save(user);
+		post.getLikingUsers().add(user);
+		postRepository.save(post);
 	}
 	
 	public void unlikePost(Integer postId, Integer likerId) {
@@ -67,8 +67,8 @@ public class PostService {
 	            .orElseThrow(() -> new EntityNotFoundException("Post not found"));
 
 		
-		user.getLikedPosts().remove(post);
-		userRepository.save(user);
+		post.getLikingUsers().remove(user);
+		postRepository.save(post);
 	}
 
 }

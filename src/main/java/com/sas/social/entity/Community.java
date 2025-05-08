@@ -34,11 +34,9 @@ public class Community {
     private Media media;
 	
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
-//    @JsonManagedReference
     private List<CommunityPost> communityPosts = new ArrayList<>();
     
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
-//    @JsonManagedReference
     private Set<UserCommunity> communityUsers = new HashSet<>();
 
     public Community() {}

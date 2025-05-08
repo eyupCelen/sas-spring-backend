@@ -43,11 +43,9 @@ public class Post {
 	
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-//    @JsonBackReference
     private User user;  // author of the post
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-//    @JsonManagedReference 
     private List<Comment> postComments = new ArrayList<>();
 	
     @ManyToMany
@@ -56,7 +54,7 @@ public class Post {
       joinColumns = @JoinColumn(name = "post_id"), 
       inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-//    @JsonBackReference
+
     private Set<User> likingUsers = new HashSet<>();
     
     @ManyToMany
