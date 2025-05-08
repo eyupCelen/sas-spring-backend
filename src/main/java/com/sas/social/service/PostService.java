@@ -9,17 +9,26 @@ import org.springframework.stereotype.Service;
 import com.sas.social.dto.PostCreateDto;
 import com.sas.social.dto.PostResponseDto;
 import com.sas.social.entity.Post;
+import com.sas.social.entity.User;
 import com.sas.social.mapper.PostMapper;
 import com.sas.social.repository.PostRepository;
+import com.sas.social.repository.UserRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class PostService {
 
-	@Autowired
 	PostRepository postRepository;
+	UserRepository userRepository;
+	PostMapper postMapper;
 	
 	@Autowired
-	PostMapper postMapper;
+	public PostService(PostRepository postRepository, UserRepository userRepository, PostMapper postMapper) {
+		this.postRepository = postRepository;
+		this.userRepository = userRepository;
+		this.postMapper = postMapper;
+	}
 
 	public ResponseEntity<?> createPost(PostCreateDto postDto) {
 		if(postDto.title() == null && postDto.postImage() == null)
@@ -39,4 +48,27 @@ public class PostService {
 		Page<Post> posts = postRepository.findByUser(userId, pageable);
 		return posts.map(p -> postMapper.map(p, viewerId));
 	}
+	
+	public void likePost(Integer postId, Integer likerId) {
+		User user = userRepository.findById(likerId)
+	            .orElseThrow(() -> new EntityNotFoundException("User not found"));
+		Post post = postRepository.findById(postId)
+	            .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+
+		
+		user.getLikedPosts().add(post);
+		userRepository.save(user);
+	}
+	
+	public void unlikePost(Integer postId, Integer likerId) {
+		User user = userRepository.findById(likerId)
+	            .orElseThrow(() -> new EntityNotFoundException("User not found"));
+		Post post = postRepository.findById(postId)
+	            .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+
+		
+		user.getLikedPosts().remove(post);
+		userRepository.save(user);
+	}
+
 }

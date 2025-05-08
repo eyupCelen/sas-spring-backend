@@ -72,5 +72,32 @@ public class PostController {
 	public ResponseEntity<?> getPostComments(@PathVariable Integer postId) {
 		return commentService.getPostComments(postId);
 	}
+	
+	@PostMapping("/{postId}/like") 
+	public ResponseEntity<?> likePost(@PathVariable Integer postId, 
+			 	@AuthenticationPrincipal UserPrincipal userDetails) {
+		Integer likerId = userDetails.getUserId();
+		try {
+			postService.likePost(postId, likerId);
+			return ResponseEntity.ok().build();
+		}
+		catch(Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@PostMapping("/{postId}/unlike") 
+	public ResponseEntity<?> unlikePost(@PathVariable Integer postId, 
+			 	@AuthenticationPrincipal UserPrincipal userDetails) {
+		Integer likerId = userDetails.getUserId();
+		try {
+			postService.unlikePost(postId, likerId);
+			return ResponseEntity.ok().build();
+		}
+		catch(Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 
 }
