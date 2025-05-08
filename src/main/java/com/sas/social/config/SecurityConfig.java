@@ -65,7 +65,7 @@ public class SecurityConfig {
 	                    .logoutSuccessHandler((request, response, authentication) -> {
 	                        response.setStatus(HttpServletResponse.SC_OK);
 	                        response.setContentType("application/json");
-	                        response.setHeader("Set-Cookie", "JSESSIONID=; HttpOnly; Path=/ Max-Age=0");
+	                        response.setHeader("Set-Cookie", "JSESSIONID=; HttpOnly; Path=/; Max-Age=0");
 	                        response.getWriter().write("{\"message\":\"Logged out successfully\"}");
 	                    })
 	                    .deleteCookies("JSESSIONID")
