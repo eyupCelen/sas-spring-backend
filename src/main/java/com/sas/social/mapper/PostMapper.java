@@ -3,11 +3,15 @@ package com.sas.social.mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.sas.social.dto.PostCreateDto;
 import com.sas.social.dto.PostResponseDto;
 import com.sas.social.dto.UserSummary;
 import com.sas.social.entity.Post;
+import com.sas.social.entity.User;
 import com.sas.social.repository.PostRepository;
 import com.sas.social.repository.UserRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Component
 public class PostMapper {
@@ -45,5 +49,18 @@ public class PostMapper {
             postLikeCount,
             postCommentCount
         );
+    }
+    
+    public Post map(PostCreateDto dto) {
+	    User user = userRepository.findByUsername( dto.username() )
+	            .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+    	return new Post(
+    			dto.title(),
+    			dto.postImage(),
+    			dto.homepageVisible(),
+    			user,
+    			dto.postCategories()
+    			);
     }
 }

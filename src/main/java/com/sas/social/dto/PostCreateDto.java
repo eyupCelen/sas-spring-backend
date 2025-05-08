@@ -6,7 +6,7 @@ import com.sas.social.entity.Category;
 import com.sas.social.entity.Media;
 
 public record PostCreateDto(
-		Integer userId,
+		String username,
 		String title,
 		Media postImage,
 		Boolean homepageVisible,

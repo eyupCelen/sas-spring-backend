@@ -18,7 +18,6 @@ import com.sas.social.dto.UserRegisterDto;
 import com.sas.social.entity.UserPrincipal;
 import com.sas.social.service.UserService;
 
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @RestController
@@ -35,6 +34,20 @@ public class UserController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> signUp(@RequestBody UserRegisterDto userRegisterDto) {
 		return userService.signUpUser(userRegisterDto);
+	}
+	
+	@PostMapping("/profile")
+    public UserProfileDto getProfile(
+            @AuthenticationPrincipal UserPrincipal userDetails) {
+		return userService.getById( userDetails.getUserId() ).get();
+	}
+	
+	@PostMapping("{username}/profile")
+    public ResponseEntity<UserProfileDto> getProfile(
+    		 @PathVariable("username") String username) {
+	    return userService.getByUsername(username)
+	            .map(ResponseEntity::ok)
+	            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 	
 	@GetMapping("/id/{id}")

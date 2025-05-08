@@ -20,10 +20,10 @@ public class CommentMapper
 	implements Function<Comment, CommentResponseDto> {
 
 	@Autowired 
-	private static UserRepository userRepository;
+	private UserRepository userRepository;
 	
 	@Autowired 
-	private static PostRepository postRepository;
+	private PostRepository postRepository;
 	
 	@Override
 	public CommentResponseDto apply(Comment comment) {
