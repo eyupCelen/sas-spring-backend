@@ -1,6 +1,8 @@
 package com.sas.social.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ import jakarta.transaction.Transactional;
 public class UserController {
 
 	private UserService userService;
-
+	
 	@Autowired
 	public UserController(UserService userService) {
 		this.userService = userService;
@@ -53,11 +55,19 @@ public class UserController {
 		return userService.getById( userDetails.getUserId() ).get();
 	}
 	
-	@PostMapping("{username}/profile")
-    public ResponseEntity<UserProfileDto> getProfile(
-    		 @PathVariable("username") String username) {
+	@GetMapping("{username}/profile")
+	public ResponseEntity<Map<String, Object>> getProfile(
+	        @AuthenticationPrincipal UserPrincipal userDetails,
+	        @PathVariable("username") String username) {
+
 	    return userService.getByUsername(username)
-	            .map(ResponseEntity::ok)
+	            .map(profileDto -> {
+	                Map<String, Object> response = new HashMap<>();
+	                response.put("UserProfileDto", profileDto);
+	                response.put("isFollowing", userService.isUserFollowing(userDetails.getUserId(), username));
+	                response.put("isBlocked", userService.isUserBlocking(userDetails.getUserId(), username));
+	                return ResponseEntity.ok(response);
+	            })
 	            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 	

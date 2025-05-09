@@ -51,7 +51,7 @@ public class PostController {
 		Integer viewingUserId = userDetails.getUserId();
 		
 		try {
-			PostResponseDto responseDto =  postService.getPost(postId, viewingUserId);
+			PostResponseDto responseDto = postService.getPost(postId, viewingUserId).get();
 			return ResponseEntity.ok(responseDto);
 		}
 		catch(NoSuchElementException e) {
@@ -74,8 +74,10 @@ public class PostController {
 	}
 
 	@GetMapping("/{postId}/comments")
-	public ResponseEntity<?> getPostComments(@PathVariable Integer postId) {
-		return commentService.getPostComments(postId);
+	public ResponseEntity<?> getPostComments(@PathVariable Integer postId,
+			@AuthenticationPrincipal UserPrincipal userDetails) {
+		
+		return commentService.getPostComments(postId, userDetails.getUserId());
 	}
 	
 	@PostMapping("/{postId}/like") 

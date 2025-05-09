@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -119,6 +120,16 @@ public class UserService {
     
     public int getPostNumber(int userId) {
     	return userRepository.getPostNumber(userId);
+    }
+    
+    public boolean isUserFollowing(Integer followerId, String followedUsername) {
+    	Integer followedId = userRepository.findByUsername( followedUsername ).get().getUserId();
+    	return userRepository.isUserFollowing(followerId, followedId);
+    }
+    
+    public boolean isUserBlocking(Integer followerId, String followedUsername) {
+    	Integer followedId = userRepository.findByUsername( followedUsername ).get().getUserId();
+    	return userRepository.isUserBlocking(followerId, followedId);
     }
     
     public void follow(String followerUsername, String followedUsername) {

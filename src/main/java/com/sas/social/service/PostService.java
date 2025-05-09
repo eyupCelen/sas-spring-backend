@@ -1,5 +1,7 @@
 package com.sas.social.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,13 +48,23 @@ public class PostService {
 		return ResponseEntity.ok().build();
 	}
 
-	
-	public PostResponseDto getPost(Integer postId, Integer viewerId) {
+	// Returns empty if user is blocked
+	public Optional<PostResponseDto> getPost(Integer postId, Integer viewerId) {
 		Post post = postRepository.findById(postId).get();
-		return postMapper.map(post, viewerId);
+		
+		if( userRepository.isUserBlocking(viewerId, post.getUser().getUserId()) ) {
+			return Optional.empty();
+		}
+
+		return Optional.of(postMapper.map(post, viewerId));
 	}
 	
 	public Page<PostResponseDto> getPostsOfUser(Integer userId, Integer viewerId, Pageable pageable) {
+		
+		if( userRepository.isUserBlocking(viewerId, userId) ) {
+			return Page.empty();
+		}
+		
 		Page<Post> posts = postRepository.findByUserId_OrderByCreationDate(userId, pageable);
 		return posts.map(p -> postMapper.map(p, viewerId));
 	}
