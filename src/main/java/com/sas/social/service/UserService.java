@@ -121,40 +121,43 @@ public class UserService {
     	return userRepository.getPostNumber(userId);
     }
     
-    public void follow(Integer followerId, Integer followedId) {
-        User follower = userRepository.findById(followerId)
+    public void follow(String followerUsername, String followedUsername) {
+        
+    	User follower = userRepository.findByUsername(followerUsername)
                 .orElseThrow();
-        User followed = userRepository.findById(followedId)
+        User followed = userRepository.findByUsername(followedUsername)
                 .orElseThrow();
         
         follower.getFollows().add(followed);
         userRepository.save(follower);
     }
 
-    public void unfollow(Integer followerId, Integer followedId) {
-        User follower = userRepository.findById(followerId)
+    public void unfollow(String followerUsername, String followedUsername) {
+        
+    	User follower = userRepository.findByUsername(followerUsername)
                 .orElseThrow();
-        User followed = userRepository.findById(followedId)
+        User followed = userRepository.findByUsername(followedUsername)
                 .orElseThrow();
         
         follower.getFollows().remove(followed);
         userRepository.save(follower);
     }
 
-    public void block(Integer blockerId, Integer blockedId) {
-        User blocker = userRepository.findById(blockerId)
+    public void block(String blockerUsername, String blockedUsername) {
+        
+    	User blocker = userRepository.findByUsername(blockerUsername)
         		.orElseThrow();
-        User blocked = userRepository.findById(blockedId)
+        User blocked = userRepository.findByUsername(blockedUsername)
         		.orElseThrow();
         
         blocker.getBlockedUsers().add(blocked);
         userRepository.save(blocker);
     }
 
-    public void unblock(Integer blockerId, Integer blockedId) {
-        User blocker = userRepository.findById(blockerId)
+    public void unblock(String blockerUsername, String blockedUsername) {
+        User blocker = userRepository.findByUsername(blockerUsername)
         		.orElseThrow();
-        User blocked = userRepository.findById(blockedId)
+        User blocked = userRepository.findByUsername(blockedUsername)
         		.orElseThrow();
         
         blocker.getBlockedUsers().remove(blocked);

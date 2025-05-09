@@ -86,15 +86,15 @@ public class UserController {
     @Transactional
     public ResponseEntity<?> followUser(
             @AuthenticationPrincipal UserPrincipal userDetails,
-            @PathVariable("id") Integer followedId) {
+            @PathVariable("id") String followedUsername) {
 
-    	Integer followerId = userDetails.getUserId();
-        if (followerId.equals(followedId)) {
+    	String followerUsername = userDetails.getUsername();
+        if (followerUsername.equals(followedUsername)) {
             return ResponseEntity.badRequest().body("Cannot follow self.");
         }
 
         try {
-            userService.follow(followerId, followedId);
+            userService.follow(followerUsername, followedUsername);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
         	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This account does not exist.");
@@ -105,15 +105,15 @@ public class UserController {
     @Transactional
     public ResponseEntity<?> unfollowUser(
             @AuthenticationPrincipal UserPrincipal userDetails,
-            @PathVariable("id") Integer followedId) {
+            @PathVariable("id") String followedUsername) {
 
-        Integer followerId = userDetails.getUserId();
-        if (followerId.equals(followedId)) {
+        String followerUsername = userDetails.getUsername();
+        if (followerUsername.equals(followedUsername)) {
             return ResponseEntity.badRequest().body("Cannot unfollow self.");
         }
 
         try {
-            userService.follow(followerId, followedId);
+            userService.follow(followerUsername, followedUsername);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
         	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This account does not exist.");
@@ -123,16 +123,16 @@ public class UserController {
     @PostMapping("/{id}/block")
     public ResponseEntity<?> blockUser(
             @AuthenticationPrincipal UserPrincipal userDetails,
-            @PathVariable("id") Integer blockedId) {
+            @PathVariable("id") String blockedUsername) {
 
-        Integer blockerId = userDetails.getUserId();
+        String blockerUsername = userDetails.getUsername();
 
-        if (blockerId.equals(blockedId)) {
+        if (blockerUsername.equals(blockedUsername)) {
             return ResponseEntity.badRequest().body("Cannot block self.");
         }
 
         try {
-            userService.block(blockerId, blockedId);
+            userService.block(blockerUsername, blockedUsername);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
         	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This account does not exist.");
@@ -143,16 +143,16 @@ public class UserController {
     @Transactional
     public ResponseEntity<?> unblockUser(
             @AuthenticationPrincipal UserPrincipal userDetails,
-            @PathVariable("id") Integer blockedId) {
+            @PathVariable("id") String blockedUsername) {
 
-        Integer blockerId = userDetails.getUserId();
+        String blockerUsername = userDetails.getUsername();
 
-        if (blockerId.equals(blockedId)) {
+        if (blockerUsername.equals(blockedUsername)) {
             return ResponseEntity.badRequest().body("Cannot unblock self.");
         }
 
         try {
-            userService.block(blockerId, blockedId);
+            userService.block(blockerUsername, blockedUsername);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
         	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This account does not exist.");
