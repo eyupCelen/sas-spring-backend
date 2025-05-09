@@ -9,6 +9,9 @@ import com.sas.social.entity.Media;
 public class MediaFactory {
 
     public static Media fromMultipartFile(MultipartFile file) throws IOException {
+    	if(file == null)
+    		return null;
+    	
         Media media = new Media();
         media.setImageName(file.getOriginalFilename());
         media.setImageType(file.getContentType());

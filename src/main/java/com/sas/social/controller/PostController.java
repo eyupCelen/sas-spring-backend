@@ -60,7 +60,7 @@ public class PostController {
 	}
 	
 	@GetMapping("/{userId}/posts")
-	public ResponseEntity<Page<PostResponseDto>> getPostsOfUser(
+	public ResponseEntity<Page<PostResponseDto>> getLatestPostsOfUser(
 	        @PathVariable Integer userId,
 	        @RequestParam(defaultValue = "0") int offset,
 	        @RequestParam(defaultValue = "10") int size,

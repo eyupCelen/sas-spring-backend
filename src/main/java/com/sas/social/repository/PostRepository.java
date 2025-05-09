@@ -32,4 +32,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     Page<Post> findByUserId_OrderByCreationDate(@Param("userId") Integer userId, Pageable pageable);
     
     boolean existsByPostId(Integer postId);
+    
+    @Query("SELECT p FROM Post p JOIN CommunityPost cp ON p.postId = cp.post.postId WHERE cp.community.communityId = :communityId ORDER BY p.createdAt DESC")
+    Page<Post> getCommunityPosts(@Param("communityId") Integer communityId, Pageable pageable);
+
 }

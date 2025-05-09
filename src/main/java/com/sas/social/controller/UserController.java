@@ -40,7 +40,6 @@ public class UserController {
 		return userService.signUpUser(userRegisterDto);
 	}
 	
-	// TODO: CORRECT MEDIA
 	@PatchMapping("/update")
 	public void updateProfile(@AuthenticationPrincipal UserPrincipal userDetails,
 				@ModelAttribute UserUpdateDto dto) throws IOException {

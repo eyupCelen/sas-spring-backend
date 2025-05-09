@@ -1,6 +1,6 @@
 package com.sas.social.dto;
 
-public record CommunityDto(
+public record CommunityResponseDto(
 		String communityName,
 		String communityDescription,
 		Integer mediaId) {
