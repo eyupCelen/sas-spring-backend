@@ -34,6 +34,7 @@ public class UserProfileMapper
 				u.getUserId(),
 				u.getVisibleName(),
 				u.getUsername(),
+				u.getBio(),
 				
 				profilePhotoId,
 				bannerPhotoId,		

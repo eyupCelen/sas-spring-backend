@@ -4,6 +4,7 @@ public record UserProfileDto (
 		Integer userId,
 		String visibleName,
 		String username,
+		String bio,
 		Integer profilePhotoId,
 		Integer bannerPhotoId,
 		Integer postNumber,
