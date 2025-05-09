@@ -28,14 +28,21 @@ public class CommentMapper
 	
 	@Override
 	public CommentResponseDto apply(Comment comment) {
+		
+		User user = comment.getUser();
+		Integer userProfilePhotoId = null;
+		
+		if(user.getProfilePhoto() != null) 
+			userProfilePhotoId = user.getProfilePhoto().getMediaId();
+		
 		return new CommentResponseDto(
 				comment.getPost().getPostId(),
 				
 				new UserSummary(
-						comment.getUser().getUserId(),
-						comment.getUser().getVisibleName(),
-						comment.getUser().getUsername(),
-						comment.getUser().getProfilePhoto()
+						user.getUserId(),
+						user.getVisibleName(),
+						user.getUsername(),
+						userProfilePhotoId
 				),
 				
 				comment.getText(),

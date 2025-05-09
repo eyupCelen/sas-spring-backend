@@ -5,12 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sas.social.dto.PostCreateDto;
 import com.sas.social.dto.PostResponseDto;
 import com.sas.social.entity.Post;
 import com.sas.social.entity.User;
 import com.sas.social.mapper.PostMapper;
+import com.sas.social.repository.MediaRepository;
 import com.sas.social.repository.PostRepository;
 import com.sas.social.repository.UserRepository;
 
@@ -22,22 +24,28 @@ public class PostService {
 	PostRepository postRepository;
 	UserRepository userRepository;
 	PostMapper postMapper;
+	MediaRepository mediaRepository;
 	
 	@Autowired
-	public PostService(PostRepository postRepository, UserRepository userRepository, PostMapper postMapper) {
+	public PostService(PostRepository postRepository, UserRepository userRepository, 
+				PostMapper postMapper, MediaRepository mediaRepository) {
 		this.postRepository = postRepository;
 		this.userRepository = userRepository;
 		this.postMapper = postMapper;
+		this.mediaRepository = mediaRepository;
 	}
 
-	public ResponseEntity<?> createPost(PostCreateDto postDto) {
-		if(postDto.title() == null && postDto.postImage() == null)
+	public ResponseEntity<?> createPost(PostCreateDto postDto, MultipartFile postImage) {
+		if(postDto.title() == null &&  postImage.isEmpty() )
 			return ResponseEntity.badRequest().body("Cannot create empty post");
 		
-		Post post = postMapper.map( postDto );
+		Post post = postMapper.map( postDto, postImage);
+		mediaRepository.save( post.getPostImage() );
+		
 		postRepository.save(post);
 		return ResponseEntity.ok().build();
 	}
+
 	
 	public PostResponseDto getPost(Integer postId, Integer viewerId) {
 		Post post = postRepository.findById(postId).get();

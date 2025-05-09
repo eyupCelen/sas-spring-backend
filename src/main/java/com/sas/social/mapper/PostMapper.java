@@ -1,9 +1,11 @@
 package com.sas.social.mapper;
 
+import java.io.IOException;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sas.social.dto.PostCreateDto;
 import com.sas.social.dto.PostResponseDto;
@@ -42,16 +44,26 @@ public class PostMapper {
         Integer postLikeCount = postRepository.getLikeCount( postId );
         Integer postCommentCount = postRepository.getCommentCount( postId );
 
+        User user = post.getUser();
+        Integer profilePhotoId = null;
+        Integer postMediaId = null;
+        
+        if( user.getProfilePhoto() != null)
+        	profilePhotoId = user.getProfilePhoto().getMediaId();
+        if( post.getPostImage() != null)
+        	postMediaId = post.getPostImage().getMediaId();
+        
         return new PostResponseDto(
             new UserSummary(
-                post.getUser().getUserId(),
-                post.getUser().getVisibleName(),
-                post.getUser().getUsername(),
-                post.getUser().getProfilePhoto()
+                user.getUserId(),
+                user.getVisibleName(),
+                user.getUsername(),
+                profilePhotoId
             ),
+            
             post.getPostId(),
             post.getContent(),
-            post.getPostImage(),
+            postMediaId,
             
             isPostAuthorFollowed,
             isPostLiked,
@@ -63,17 +75,23 @@ public class PostMapper {
         );
     }
     
-    public Post map(PostCreateDto dto) {
+	public Post map(PostCreateDto dto, MultipartFile postImage) {
 	    User user = userRepository.findByUsername( dto.username() )
 	            .orElseThrow(() -> new EntityNotFoundException("User not found"));
 	    Set<Category> categories = categoryRepository.findAllByCategoryNameIn( dto.postCategories() );
 	    		
-    	return new Post(
-    			dto.title(),
-    			dto.postImage(),
-    			dto.homepageVisible(),
-    			user,
-    			categories
-    			);
-    }
+		try {
+			return new Post(
+					dto.title(),
+					MediaFactory.fromMultipartFile(postImage),
+					dto.homepageVisible(),
+					user,
+					categories
+					);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

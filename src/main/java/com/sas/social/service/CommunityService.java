@@ -12,6 +12,7 @@ import com.sas.social.dto.CommunityDto;
 import com.sas.social.dto.PostCreateDto;
 import com.sas.social.entity.Community;
 import com.sas.social.entity.CommunityPost;
+import com.sas.social.entity.Media;
 import com.sas.social.entity.Post;
 import com.sas.social.mapper.PostMapper;
 import com.sas.social.repository.CommunityPostRepository;
@@ -52,8 +53,7 @@ public class CommunityService {
 	    Community community = new Community(
 			dto.communityName(),
 			dto.communityDescription(),
-			dto.communityImage()
-		);
+			new Media());
 		
 		communityRepository.save(community);
 		return ResponseEntity.ok().build();
@@ -65,22 +65,22 @@ public class CommunityService {
 				.map(u -> new CommunityDto(
 							u.getCommunityName(),
 							u.getCommunityDescription(),
-							u.getMedia()
+							u.getMedia().getMediaId()
 						)
 					)
 				.toList();
 	}
 	
-	@Transactional
-	public void createCommunityPost(@RequestBody PostCreateDto postDto,
-			Integer communityId) {
-		Community community = communityRepository
-				.findById( communityId ).get();
-		
-		Post post = postMapper.map( postDto );
-		postRepository.save(post);
-		CommunityPost communityPost = new CommunityPost(post, community);
-		communityPostRepository.save( communityPost );
-	}
+//	@Transactional
+//	public void createCommunityPost(@RequestBody PostCreateDto postDto,
+//			Integer communityId) {
+//		Community community = communityRepository
+//				.findById( communityId ).get();
+//		
+//		Post post = postMapper.map( postDto );
+//		postRepository.save(post);
+//		CommunityPost communityPost = new CommunityPost(post, community);
+//		communityPostRepository.save( communityPost );
+//	}
  
 }

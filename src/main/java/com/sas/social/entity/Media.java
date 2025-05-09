@@ -1,5 +1,9 @@
 package com.sas.social.entity;
 
+import java.sql.Types;
+
+import org.hibernate.annotations.JdbcTypeCode;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,24 +27,20 @@ public class Media {
 	private String imageType;
 	
 	@Lob
-	@Column(name = "image_byte", columnDefinition = "BYTEA")
+	@Column(name = "image_byte")
+	@JdbcTypeCode(Types.BINARY)
 	private byte[] imageByte;
 	
 	public Media() {}
 
-	public Media(Integer media_id, String imageName, String imageType, byte[] imageByte) {
-		this.media_id = media_id;
+	public Media(String imageName, String imageType, byte[] imageByte) {
 		this.imageName = imageName;
 		this.imageType = imageType;
 		this.imageByte = imageByte;
 	}
 
-	public Integer getMedia_id() {
+	public Integer getMediaId() {
 		return media_id;
-	}
-
-	public void setMedia_id(Integer media_id) {
-		this.media_id = media_id;
 	}
 
 	public String getImageName() {

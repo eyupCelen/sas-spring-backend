@@ -36,13 +36,27 @@ public class CommunityController {
 		return communityService.getAll();
 	}
 	
-	@PostMapping("{communityId}/post") 
-	public void createCommunityPost(@RequestBody PostCreateDto postDto,
-				@PathVariable Integer communityId) {
-		
-		communityService.createCommunityPost(postDto, communityId);
-	}
+//	@PostMapping("{communityId}/post") 
+//	public void createCommunityPost(@RequestBody PostCreateDto postDto,
+//				@PathVariable Integer communityId) {
+//		
+//		communityService.createCommunityPost(postDto, communityId);
+//	}
 	
+	
+//	@GetMapping("/{communityId}/posts")
+//	public ResponseEntity<Page<PostResponseDto>> getRecentCommunityPosts(
+//	        @PathVariable Integer communityId,
+//	        @RequestParam(defaultValue = "0") int offset,
+//	        @RequestParam(defaultValue = "10") int size,
+//	        @AuthenticationPrincipal UserPrincipal userDetails) {
+//
+////	    Integer viewerId = userDetails.getUserId();
+////	    Pageable pageable = PageRequest.of(offset / size, size); // converting offset to page number
+////
+////	    Page<PostResponseDto> posts = postService.getPostsOfUser(userId, viewerId, pageable);
+////	    return ResponseEntity.ok(posts);
+//	}
 	
 	
 }

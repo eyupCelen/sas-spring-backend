@@ -2,12 +2,12 @@ package com.sas.social.dto;
 
 import java.util.Set;
 
-import com.sas.social.entity.Media;
+import org.springframework.web.multipart.MultipartFile;
 
 public record PostCreateDto(
 		String username,
 		String title,
-		Media postImage,
+//		MultipartFile postImage,
 		Boolean homepageVisible,
 		Set<String> postCategories) {
 }

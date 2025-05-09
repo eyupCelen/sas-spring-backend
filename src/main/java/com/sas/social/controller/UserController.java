@@ -1,5 +1,6 @@
 package com.sas.social.controller;
 
+import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,9 +40,10 @@ public class UserController {
 		return userService.signUpUser(userRegisterDto);
 	}
 	
+	// TODO: CORRECT MEDIA
 	@PatchMapping("/update")
 	public void updateProfile(@AuthenticationPrincipal UserPrincipal userDetails,
-				@RequestBody UserUpdateDto dto) {
+				@ModelAttribute UserUpdateDto dto) throws IOException {
 		Integer userId = userDetails.getUserId();
 		userService.updateUser(dto, userId);
 	}

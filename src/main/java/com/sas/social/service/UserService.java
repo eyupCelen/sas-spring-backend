@@ -1,5 +1,6 @@
 package com.sas.social.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,9 +12,12 @@ import org.springframework.stereotype.Service;
 import com.sas.social.dto.UserProfileDto;
 import com.sas.social.dto.UserRegisterDto;
 import com.sas.social.dto.UserUpdateDto;
+import com.sas.social.entity.Media;
 import com.sas.social.entity.User;
+import com.sas.social.mapper.MediaFactory;
 import com.sas.social.mapper.UserProfileMapper;
 import com.sas.social.mapper.UserRegisterMapper;
+import com.sas.social.repository.MediaRepository;
 import com.sas.social.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -24,14 +28,17 @@ public class UserService {
 	private UserRepository userRepository;
 	private UserProfileMapper userMapper;
 	private UserRegisterMapper userRegisterMapper;
+	private MediaRepository mediaRepository;
 	
 	@Autowired
     public UserService(UserRepository userRepository, 
     				   UserProfileMapper userMapper,
-    				   UserRegisterMapper userRegisterMapper) {
+    				   UserRegisterMapper userRegisterMapper,
+    				   MediaRepository mediaRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.userRegisterMapper = userRegisterMapper;
+        this.mediaRepository = mediaRepository;
     }
 	
     @Transactional
@@ -51,7 +58,8 @@ public class UserService {
     		return ResponseEntity.ok().build();
     }
 
-    public void updateUser(UserUpdateDto dto, Integer userId) {
+    @Transactional
+    public void updateUser(UserUpdateDto dto, Integer userId) throws IOException {
     	User user = userRepository.findById(userId).get();
     	
         if (dto.visibleName() != null) {
@@ -61,12 +69,16 @@ public class UserService {
             user.setBio( dto.bio() );
         }
         if (dto.profilePhoto() != null) {
-            user.setProfilePhoto( dto.profilePhoto() );
+        	Media profilePhoto = MediaFactory.fromMultipartFile( dto.profilePhoto() );
+        	mediaRepository.save( profilePhoto );
+            user.setProfilePhoto( profilePhoto );
         }
         if (dto.bannerPhoto() != null) {
-            user.setBannerPhoto( dto.bannerPhoto() );
-        }
-        
+        	Media bannerPhoto = MediaFactory.fromMultipartFile( dto.bannerPhoto() );
+        	mediaRepository.save( bannerPhoto );
+            user.setBannerPhoto( bannerPhoto );
+	        }
+	        
         userRepository.save(user);
     }
     
