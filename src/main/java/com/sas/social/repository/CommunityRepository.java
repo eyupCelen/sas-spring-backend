@@ -6,4 +6,6 @@ import com.sas.social.entity.Community;
 
 public interface CommunityRepository extends JpaRepository<Community, Integer>{
 
+	boolean existsByCommunityName(String communityName);
+
 }

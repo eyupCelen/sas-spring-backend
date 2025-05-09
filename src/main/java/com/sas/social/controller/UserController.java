@@ -95,7 +95,7 @@ public class UserController {
             userService.follow(followerId, followedId);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body("This account does not exist.");
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This account does not exist.");
         }        
     }
 	
@@ -114,7 +114,7 @@ public class UserController {
             userService.follow(followerId, followedId);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body("This account does not exist.");
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This account does not exist.");
         }        
     }
     
@@ -133,7 +133,7 @@ public class UserController {
             userService.block(blockerId, blockedId);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body("This account does not exist.");
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This account does not exist.");
         }
     }
     
@@ -153,7 +153,7 @@ public class UserController {
             userService.block(blockerId, blockedId);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().body("This account does not exist.");
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This account does not exist.");
         }
     }
 

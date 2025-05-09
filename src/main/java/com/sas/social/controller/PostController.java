@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,8 @@ import com.sas.social.dto.PostResponseDto;
 import com.sas.social.entity.UserPrincipal;
 import com.sas.social.service.CommentService;
 import com.sas.social.service.PostService;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/post")
@@ -50,7 +53,7 @@ public class PostController {
 			return ResponseEntity.ok(responseDto);
 		}
 		catch(NoSuchElementException e) {
-			return ResponseEntity.badRequest().body("Post doesn't exist");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post doesn't exist");
 		}
 	}
 	
@@ -81,8 +84,8 @@ public class PostController {
 			postService.likePost(postId, likerId);
 			return ResponseEntity.ok().build();
 		}
-		catch(Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
+		catch(EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
 	
@@ -94,8 +97,8 @@ public class PostController {
 			postService.unlikePost(postId, likerId);
 			return ResponseEntity.ok().build();
 		}
-		catch(Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
+		catch(EntityNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
 

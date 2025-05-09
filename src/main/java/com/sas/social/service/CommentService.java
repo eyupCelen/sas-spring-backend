@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +37,13 @@ public class CommentService {
 			return ResponseEntity.ok().build();
 		} 
 		catch(NoSuchElementException e) {
-			return ResponseEntity.badRequest().body( e.getMessage() );
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body( e.getMessage() );
 		}
 	}
 	
 	public ResponseEntity<?> getPostComments(Integer postId) {
 		if( !postRepository.existsByPostId(postId))
-			return ResponseEntity.badRequest().body("Post doesn't exist");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post doesn't exist");
 		
 		List<Comment> comments = commentRepository.findByPostPostId(postId);
 		List<CommentResponseDto> commentDtoList = comments
