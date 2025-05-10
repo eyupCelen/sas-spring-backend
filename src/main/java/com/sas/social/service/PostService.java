@@ -1,16 +1,18 @@
 package com.sas.social.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.sas.social.dto.PostCreateDto;
 import com.sas.social.dto.PostResponseDto;
+import com.sas.social.entity.Category;
 import com.sas.social.entity.Post;
 import com.sas.social.entity.User;
 import com.sas.social.mapper.PostMapper;
@@ -70,6 +72,25 @@ public class PostService {
 		
 		Page<Post> posts = postRepository.findByUserId_OrderByCreationDate(userId, pageable);
 		return posts.map(p -> postMapper.map(p, viewerId));
+	}
+	
+	
+	public Page<PostResponseDto> getPostFeed(String username, Pageable pageable) {
+		
+		User user = userRepository.findByUsername(username).get();
+		
+		Set<User> followedUsers = user.getFollows();
+		Set<User> blockedUsers = user.getBlockedUsers();
+		Set<Category> interestedCategories = user.getUserCategories();
+		
+		LocalDateTime cutoffDate = LocalDateTime.now().minusDays(7);
+		
+		return postRepository.getPagedPostFeed(followedUsers, blockedUsers, 
+							interestedCategories, cutoffDate, pageable)
+
+				.map(p -> postMapper.map(p, user.getUserId() )
+				);
+				
 	}
 	
 	public void likePost(Integer postId, Integer likerId) {

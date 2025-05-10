@@ -1,6 +1,8 @@
 package com.sas.social.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +11,9 @@ import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.sas.social.entity.Category;
 import com.sas.social.entity.Post;
+import com.sas.social.entity.User;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
         
@@ -35,5 +39,27 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     
     @Query("SELECT p FROM Post p JOIN CommunityPost cp ON p.postId = cp.post.postId WHERE cp.community.communityId = :communityId ORDER BY p.createdAt DESC")
     Page<Post> getCommunityPosts(@Param("communityId") Integer communityId, Pageable pageable);
+
+    @Query("""
+    	    SELECT DISTINCT p FROM Post p
+    	    JOIN p.user u
+    	    LEFT JOIN p.postCategories pc
+    	    WHERE 
+    	        p.createdAt >= :cutoffDate AND (
+    	            u IN :followedUsers
+    	            OR (
+    	                p.homepageVisible = true AND
+    	                pc IN :interestedCategories AND 
+    	                u NOT IN :blockedUsers
+    	            )
+    	        )
+    	    """)
+    	Page<Post> getPagedPostFeed (
+    	    @Param("followedUsers") Set<User> followedUsers,
+    	    @Param("blockedUsers") Set<User> blockedUsers,
+    	    @Param("interestedCategories") Set<Category> interestedCategories,
+    	    @Param("cutoffDate") LocalDateTime cutoffDate,
+    	    Pageable pageable
+    	);
 
 }
