@@ -53,10 +53,11 @@ public class CommunityController {
 		return communityService.getAllCommunities(username);
 	}
 	
-	@PostMapping("{communityId}/join") 
+	@PostMapping("{communityName}/join") 
 	public void joinCommunity(@PathVariable String communityName,
 			@AuthenticationPrincipal UserPrincipal userDetails) {
 		
+		communityService.joinCommunity(userDetails.getUsername(), communityName);
 	}
 	
 	@PostMapping("{communityName}/share-post") 

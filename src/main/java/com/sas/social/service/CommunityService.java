@@ -49,6 +49,7 @@ public class CommunityService {
 				MediaRepository mediaRepository,
 				PostRepository postRepository,
 				UserRepository userRepository,
+				UserCommunityRepository userCommunityRepo,
 				PostMapper postMapper) {
 		
 		this.communityRepository = communityRepository;
@@ -56,6 +57,7 @@ public class CommunityService {
 		this.postRepository = postRepository;
 		this.mediaRepository = mediaRepository;
 		this.userRepository = userRepository;
+		this.userCommunityRepo = userCommunityRepo;
 		this.postMapper = postMapper;
 	}
 
@@ -114,7 +116,7 @@ public class CommunityService {
 		Community community = communityRepository
 					.findByCommunityName(communityName).get();
 		
-		UserCommunity userCommunity = new UserCommunity(user, community, "USER");
+		UserCommunity userCommunity = new UserCommunity(user, community, "MEMBER");
 		
 		userCommunityRepo.save( userCommunity );
 	}
