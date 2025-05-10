@@ -138,14 +138,14 @@ public class UserController {
 
         String followerUsername = userDetails.getUsername();
         if (followerUsername.equals(followedUsername)) {
-            return ResponseEntity.badRequest().body("Cannot unfollow self.");
+            return ResponseEntity.badRequest().body("Kendini takipten çıkamazsın.");
         }
 
         try {
             userService.follow(followerUsername, followedUsername);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
-        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This account does not exist.");
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Böyle bir hesap yok.");
         }        
     }
     
@@ -164,7 +164,7 @@ public class UserController {
             userService.block(blockerUsername, blockedUsername);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
-        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This account does not exist.");
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Böyle bir hesap yok.");
         }
     }
     
@@ -177,14 +177,14 @@ public class UserController {
         String blockerUsername = userDetails.getUsername();
 
         if (blockerUsername.equals(blockedUsername)) {
-            return ResponseEntity.badRequest().body("Cannot unblock self.");
+            return ResponseEntity.badRequest().body("Kendi engelini açamazsın.");
         }
 
         try {
             userService.block(blockerUsername, blockedUsername);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
-        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This account does not exist.");
+        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Böyle bir hesap yok.");
         }
     }
 
