@@ -48,13 +48,15 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     	        p.createdAt >= :cutoffDate AND (
     	            u IN :followedUsers
     	            OR (
+    	                u NOT IN :blockedUsers AND
+    	                u <> :currentUser AND
     	                p.homepageVisible = true AND
-    	                pc IN :interestedCategories AND 
-    	                u NOT IN :blockedUsers
+    	                pc IN :interestedCategories  
     	            )
     	        )
     	    """)
     	Page<Post> getPagedPostFeed (
+    		@Param("currentUser") User user,
     	    @Param("followedUsers") Set<User> followedUsers,
     	    @Param("blockedUsers") Set<User> blockedUsers,
     	    @Param("interestedCategories") Set<Category> interestedCategories,

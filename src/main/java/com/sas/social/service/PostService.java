@@ -83,9 +83,9 @@ public class PostService {
 		Set<User> blockedUsers = user.getBlockedUsers();
 		Set<Category> interestedCategories = user.getUserCategories();
 		
-		LocalDateTime cutoffDate = LocalDateTime.now().minusDays(7);
+		LocalDateTime cutoffDate = LocalDateTime.now().minusDays(20);
 		
-		return postRepository.getPagedPostFeed(followedUsers, blockedUsers, 
+		return postRepository.getPagedPostFeed(user, followedUsers, blockedUsers, 
 							interestedCategories, cutoffDate, pageable)
 
 				.map(p -> postMapper.map(p, user.getUserId() )

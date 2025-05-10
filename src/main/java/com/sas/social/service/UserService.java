@@ -162,6 +162,7 @@ public class UserService {
         		.orElseThrow();
         
         blocker.getBlockedUsers().add(blocked);
+        unfollow(blockerUsername, blockedUsername);
         userRepository.save(blocker);
     }
 
