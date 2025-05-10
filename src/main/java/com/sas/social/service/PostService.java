@@ -38,7 +38,7 @@ public class PostService {
 	}
 
 	public ResponseEntity<?> createPost(PostCreateDto postDto) {
-		if(postDto.title() == null &&  postDto.postImage().isEmpty() )
+		if(postDto.title() == null &&  postDto.postImage() == null )
 			return ResponseEntity.badRequest().body("Cannot create empty post");
 		
 		Post post = postMapper.map( postDto);
