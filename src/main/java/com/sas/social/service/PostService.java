@@ -37,12 +37,14 @@ public class PostService {
 		this.mediaRepository = mediaRepository;
 	}
 
-	public ResponseEntity<?> createPost(PostCreateDto postDto, MultipartFile postImage) {
-		if(postDto.title() == null &&  postImage.isEmpty() )
+	public ResponseEntity<?> createPost(PostCreateDto postDto) {
+		if(postDto.title() == null &&  postDto.postImage().isEmpty() )
 			return ResponseEntity.badRequest().body("Cannot create empty post");
 		
-		Post post = postMapper.map( postDto, postImage);
-		mediaRepository.save( post.getPostImage() );
+		Post post = postMapper.map( postDto);
+		
+		if( post.getPostImage() != null)
+			mediaRepository.save( post.getPostImage() );
 		
 		postRepository.save(post);
 		return ResponseEntity.ok().build();
@@ -59,6 +61,7 @@ public class PostService {
 		return Optional.of(postMapper.map(post, viewerId));
 	}
 	
+	// Returns empty if user is blocked
 	public Page<PostResponseDto> getPostsOfUser(Integer userId, Integer viewerId, Pageable pageable) {
 		
 		if( userRepository.isUserBlocking(viewerId, userId) ) {

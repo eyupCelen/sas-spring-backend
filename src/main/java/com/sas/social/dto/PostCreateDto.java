@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 public record PostCreateDto(
 		String username,
 		String title,
-//		MultipartFile postImage,
+		MultipartFile postImage,
 		Boolean homepageVisible,
 		Set<String> postCategories) {
 }

@@ -75,7 +75,7 @@ public class PostMapper {
         );
     }
     
-	public Post map(PostCreateDto dto, MultipartFile postImage) {
+	public Post map(PostCreateDto dto) {
 	    User user = userRepository.findByUsername( dto.username() )
 	            .orElseThrow(() -> new EntityNotFoundException("User not found"));
 	    Set<Category> categories = categoryRepository.findAllByCategoryNameIn( dto.postCategories() );
@@ -83,7 +83,7 @@ public class PostMapper {
 		try {
 			return new Post(
 					dto.title(),
-					MediaFactory.fromMultipartFile(postImage),
+					MediaFactory.fromMultipartFile( dto.postImage() ),
 					dto.homepageVisible(),
 					user,
 					categories

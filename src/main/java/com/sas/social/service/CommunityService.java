@@ -84,16 +84,17 @@ public class CommunityService {
 	}
 	
 	@Transactional
-	public void createCommunityPost(PostCreateDto postDto, MultipartFile postImage,
+	public void createCommunityPost(PostCreateDto postDto,
 			Integer communityId) {
 		Community community = communityRepository
 				.findById( communityId ).get();
 		
-		Post post = postMapper.map( postDto, postImage);
+		Post post = postMapper.map( postDto );
 		CommunityPost communityPost = new CommunityPost(post, community);
 		
 		// persist order is important!
-		mediaRepository.save( post.getPostImage() );
+		if( post.getPostImage() != null)
+			mediaRepository.save( post.getPostImage() );
 		postRepository.save(post);
 		communityPostRepository.save( communityPost );
 	}

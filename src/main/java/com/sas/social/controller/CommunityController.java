@@ -52,7 +52,7 @@ public class CommunityController {
 				@RequestPart MultipartFile postImage,
 				@PathVariable Integer communityId) {
 		
-		communityService.createCommunityPost(postDto, postImage, communityId);
+		communityService.createCommunityPost(postDto, communityId);
 	}
 	
 	

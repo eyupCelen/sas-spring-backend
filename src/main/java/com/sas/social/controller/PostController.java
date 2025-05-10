@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,9 +41,8 @@ public class PostController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<?> createPost(@RequestPart PostCreateDto postCreateDto,
-			@RequestPart MultipartFile postImage) {
-		return postService.createPost(postCreateDto, postImage);
+	public ResponseEntity<?> createPost(@ModelAttribute PostCreateDto postCreateDto) {
+		return postService.createPost(postCreateDto);
 	}
 	
 	@GetMapping("/{postId}")
@@ -55,7 +55,7 @@ public class PostController {
 			return ResponseEntity.ok(responseDto);
 		}
 		catch(NoSuchElementException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post doesn't exist");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post doesn't exist or belongs to a blocked account.");
 		}
 	}
 	
