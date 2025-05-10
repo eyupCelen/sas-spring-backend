@@ -101,7 +101,7 @@ public class UserController {
 	}
 
 	@GetMapping("/post-feed")
-	public Page<PostResponseDto> geetPostFeed(@AuthenticationPrincipal UserPrincipal userDetails,
+	public Page<PostResponseDto> getPostFeed(@AuthenticationPrincipal UserPrincipal userDetails,
 		        @RequestParam(defaultValue = "0") int offset,
 		        @RequestParam(defaultValue = "10") int size
 				) {
