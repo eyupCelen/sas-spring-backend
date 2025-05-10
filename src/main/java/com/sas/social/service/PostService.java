@@ -95,9 +95,9 @@ public class PostService {
 	
 	public void likePost(Integer postId, Integer likerId) {
 		User user = userRepository.findById(likerId)
-	            .orElseThrow(() -> new EntityNotFoundException("User not found"));
+	            .orElseThrow(() -> new EntityNotFoundException("Kullanıcı bulunamadı."));
 		Post post = postRepository.findById(postId)
-	            .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+	            .orElseThrow(() -> new EntityNotFoundException("Gönderi bulunamadı."));
 
 		
 		post.getLikingUsers().add(user);
@@ -106,9 +106,9 @@ public class PostService {
 	
 	public void unlikePost(Integer postId, Integer likerId) {
 		User user = userRepository.findById(likerId)
-	            .orElseThrow(() -> new EntityNotFoundException("User not found"));
+	            .orElseThrow(() -> new EntityNotFoundException("Kullanıcı bulunamadı."));
 		Post post = postRepository.findById(postId)
-	            .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+	            .orElseThrow(() -> new EntityNotFoundException("Gönderi bulunamadı."));
 
 		
 		post.getLikingUsers().remove(user);

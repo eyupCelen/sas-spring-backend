@@ -55,7 +55,7 @@ public class PostController {
 			return ResponseEntity.ok(responseDto);
 		}
 		catch(NoSuchElementException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post doesn't exist or belongs to a blocked account.");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Gönderi mevcut değil veya engelli bir hesapa ait.");
 		}
 	}
 	

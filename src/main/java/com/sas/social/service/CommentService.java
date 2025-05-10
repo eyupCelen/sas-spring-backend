@@ -48,7 +48,7 @@ public class CommentService {
 	
 	public ResponseEntity<?> getPostComments(Integer postId, Integer viewingId) {
 		if( !postRepository.existsByPostId(postId))
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post doesn't exist");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Gönderi mevcut değil.");
 		
 		User user = userRepository.findById(viewingId).get();
 		

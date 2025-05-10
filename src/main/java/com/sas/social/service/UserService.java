@@ -49,9 +49,9 @@ public class UserService {
     	boolean usernameTaken = userRepository.existsByUsername(userRegisterDto.username());
     	
     	if(emailTaken)
-    		return ResponseEntity.status(HttpStatus.CONFLICT).body("This email is in use!");
+    		return ResponseEntity.status(HttpStatus.CONFLICT).body("Bu email zaten kullanılıyor.");
     	if(usernameTaken)
-    		return ResponseEntity.status(HttpStatus.CONFLICT).body("This username is already taken!");
+    		return ResponseEntity.status(HttpStatus.CONFLICT).body("Kullanıcı adı zaten alınmış.");
     	
     	// mapper handles hashing the password
     	User user = userRegisterMapper.ToEntity(userRegisterDto);

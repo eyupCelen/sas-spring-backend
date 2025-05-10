@@ -69,7 +69,7 @@ public class CommunityService {
 	    if (nameTaken) {
 	        return ResponseEntity
 	            .status(HttpStatus.CONFLICT)
-	            .body("Community name is already taken.");
+	            .body("Topluluk adı zaten alınmış.");
 	    }
 	    
 	    User user = userRepository.findByUsername(username).get();
